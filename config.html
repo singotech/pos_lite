@@ -4,12 +4,7 @@
 <head>
   <title>POS Lite</title>
 
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-16.png">
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-32.png">
-  <link rel="icon" type="image/png" sizes="96x96"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-96.png">
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/cK1Ss7vL/poslite-logo.png">
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,35 +17,50 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/pos.css">
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid app-shell">
     <div class="row">
 
-      <div class="col-lg-12">
-        <ul class="nav nav-pills justify-content-end p-2" style="width:100%; background-color:aliceblue">
-          <li class="nav-item">
-            <a class="nav-link" href="./index.html">Sales</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./product.html">Product</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Config</a>
-          </li>
-        </ul>
-      </div>
+      <header class="col-lg-12 app-topbar">
+        <a class="app-brand" href="./index.html" aria-label="POS Lite home">
+          <span class="app-brand-mark" aria-hidden="true"><i class="fa-solid fa-store"></i></span>
+          <span class="app-brand-name">POS LITE<small>Point of sale</small></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <ul class="nav nav-pills app-nav">
+            <li class="nav-item"><a class="nav-link" href="./index.html"><i class="fa-solid fa-cash-register"
+                  aria-hidden="true"></i> Checkout</a></li>
+            <li class="nav-item"><a class="nav-link" href="./sales.html"><i class="fa-solid fa-chart-line"
+                  aria-hidden="true"></i> Sales</a></li>
+            <li class="nav-item"><a class="nav-link" href="./product.html"><i class="fa-solid fa-box"
+                  aria-hidden="true"></i> Products</a></li>
+            <li class="nav-item"><a class="nav-link active" href="./config.html" aria-current="page"><i
+                  class="fa-solid fa-gear" aria-hidden="true"></i> Config</a></li>
+          </ul>
+        </nav>
+      </header>
 
       <div class="col-lg-12 mt-3">
-        <h2 class="alert alert-primary text-center">
+        <h2 class="alert page-title">
           Configuration
+          <small>Set up your store details, receipt, and local data.</small>
         </h2>
       </div>
 
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body p-3">
+            <div class="page-section-heading">
+              <div>
+                <h3>Store settings</h3>
+                <p>These details appear on receipts. Set <code>payment_types</code> to a comma-separated list (for
+                  example: <code>cash,qris,bank_transfer</code>) to configure checkout methods. Download a backup before
+                  importing new settings.</p>
+              </div>
+            </div>
             <div class="row">
               <div class="col-lg-4 mb-2">
                 <div class="row no-gutters">
@@ -75,18 +85,19 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Replace configuration?</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class="modal-body">
-                        Do you really want to replace all config?
+                        This will replace every setting in this browser. Make sure your current configuration is backed
+                        up.
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary" data-dismiss="modal"
-                          onclick="onUploadConfigProcess()">Save changes</button>
+                          onclick="onUploadConfigProcess()">Replace settings</button>
                       </div>
                     </div>
                   </div>
@@ -128,7 +139,7 @@
                       <input id="new_config_key" type="text" class="form-control">
                     </td>
                     <td>
-                      <input id="new_config_value" type="text" class="form-control">
+                      <textarea id="new_config_value" class="form-control" rows="2"></textarea>
                     </td>
                     <td style="text-align:center"><button type="button" class="btn btn-success btn-rounded btn-sm my-0"
                         style="border-color:antiquewhite" onclick="onAddConfig()">
@@ -143,19 +154,22 @@
       </div>
 
       <div class="col-lg-12">
-        <div class="card mt-3 mb-3">
+        <div class="card danger-panel mt-3 mb-3">
           <div class="card-body p-3">
-            <div>
-              <button type="button" class="btn btn-info" data-toggle="modal"
-              data-target="#resetModal">
+            <div class="page-section-heading">
+              <div>
+                <h3>Reset local data</h3>
+                <p>Factory reset permanently removes products, configuration, and sales from this browser.</p>
+              </div>
+              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#resetModal">
                 Factory Reset
               </button>
-              <div class="modal fade" id="resetModal" tabindex="-1" role="dialog"
-              aria-labelledby="resetModalLabel" aria-hidden="true">
+              <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="resetModalLabel">Warning</h5>
+                      <h5 class="modal-title" id="resetModalLabel">Reset this browser?</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -164,9 +178,9 @@
                       This action will delete all your data, make sure it's already backup
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                       <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        onclick="onFactoryResetClicked()">Save changes</button>
+                        onclick="onFactoryResetClicked()">Reset all data</button>
                     </div>
                   </div>
                 </div>
@@ -193,8 +207,9 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
   <script src="js/localstoragedb.min.js"></script>
-  <script src="js/localstoragedbcustom.js"></script>
-  <script src="js/customalert.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/alerts.js"></script>
+  <script src="js/csv.js"></script>
 
   <!-- Custom JS -->
   <script type="text/javascript">
@@ -202,39 +217,64 @@
     allConfigs() // init page
 
     function allConfigs() {
-      var listConfig = lsDB.queryAll("config")
-      if (listConfig.length == 0) {
+      lsDB = newSessionDB()
+      renderConfigs(lsDB.queryAll("config"))
+    }
+
+    function renderConfigs(configs) {
+      var configList = document.getElementById("config_list")
+      configList.textContent = ""
+      if (configs.length === 0) {
+        var emptyRow = document.createElement("tr")
+        var emptyCell = document.createElement("td")
+        emptyCell.colSpan = 4
+        emptyCell.className = "data-empty"
+        emptyCell.textContent = "No settings found. Add a setting below or adjust your search."
+        emptyRow.appendChild(emptyCell)
+        configList.appendChild(emptyRow)
         return
       }
 
-      configList = ``
-      listConfig.forEach(function (value) {
-        var singleDataValues = Object.values(value)
-        var singleDataKeys = Object.keys(value)
-        var singleDataRow = ``
-        singleDataValues.forEach(function (va, i) {
-          singleDataRow += `<td id="config_${singleDataKeys[i]}_${singleDataValues[0]}">${va}</td>`
+      configs.forEach(function (config) {
+        var row = document.createElement("tr")
+        row.id = "config_data_" + config.ID;
+        [
+          ["config_ID", config.ID],
+          ["config_key", config.key],
+          ["config_value", config.value]
+        ].forEach(function (field) {
+          var cell = document.createElement("td")
+          cell.id = field[0] + "_" + config.ID
+          cell.textContent = field[1] === null || field[1] === undefined ? "" : String(field[1])
+          if (field[0] === "config_value") {
+            cell.className = "config-value-cell"
+          }
+          row.appendChild(cell)
         })
 
-        configList += `
-              <tr id="config_data_${singleDataValues[0]}">
-                ${singleDataRow}
-                <td style="text-align:center">
-                  <button class="btn btn-sm btn-secondary" onclick="onEditConfig(${singleDataValues[0]})">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="onDeleteConfig(${singleDataValues[0]})">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>`
+        var actions = document.createElement("td")
+        actions.className = "text-center"
+        var editButton = document.createElement("button")
+        editButton.type = "button"
+        editButton.className = "btn btn-sm btn-secondary mr-1"
+        editButton.setAttribute("aria-label", "Edit setting " + config.key)
+        editButton.innerHTML = '<i class="fa fa-edit" aria-hidden="true"></i>'
+        editButton.addEventListener("click", function () { onEditConfig(config.ID) })
+        var deleteButton = document.createElement("button")
+        deleteButton.type = "button"
+        deleteButton.className = "btn btn-sm btn-danger"
+        deleteButton.setAttribute("aria-label", "Delete setting " + config.key)
+        deleteButton.innerHTML = '<i class="fas fa-trash" aria-hidden="true"></i>'
+        deleteButton.addEventListener("click", function () { onDeleteConfig(config.ID) })
+        actions.appendChild(editButton)
+        actions.appendChild(deleteButton)
+        row.appendChild(actions)
+        configList.appendChild(row)
       })
-
-      document.getElementById("config_list").innerHTML = configList
     }
 
     function onAddConfig() {
-      var configKey = document.getElementById("new_config_key").value
+      var configKey = document.getElementById("new_config_key").value.trim()
       var configValue = document.getElementById("new_config_value").value
 
       if (configKey == "" || configValue == "") {
@@ -242,6 +282,7 @@
         return
       }
 
+      lsDB = newSessionDB()
       var registeredConfig = lsDB.queryAll("config", {
         query: { key: configKey }
       })
@@ -263,57 +304,69 @@
     }
 
     function onEditConfig(id) {
-      var currentConfigID = document.getElementById("config_ID_" + id).innerHTML
-      var currentConfigKey = document.getElementById("config_key_" + id).innerHTML
-      var currentConfigValue = document.getElementById("config_value_" + id).innerHTML
-
-      document.getElementById("config_data_" + id).innerHTML = `
-                <td id="config_ID_${id}">${currentConfigID}</td>
-                <td id="config_key_${id}" contenteditable=true style="border:groove">${currentConfigKey}</td>
-                <td id="config_value_${id}" contenteditable=true style="border:groove">${currentConfigValue}</td>
-                <td style="text-align:center">
-                  <button class="btn btn-sm btn-primary" onclick="onSaveConfig(${id})">
-                    <i class="fa fa-save"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="onDeleteConfig(${id})">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>`
-
+      var row = document.getElementById("config_data_" + id)
+      var values = ["config_ID_" + id, "config_key_" + id, "config_value_" + id]
+        .map(function (cellId) { return document.getElementById(cellId).textContent })
+      row.textContent = ""
+      values.forEach(function (value, index) {
+        var cell = document.createElement("td")
+        cell.id = ["config_ID", "config_key", "config_value"][index] + "_" + id
+        if (index === 2 && values[1] === "receipt_footer") {
+          var editor = document.createElement("textarea")
+          editor.className = "form-control"
+          editor.rows = 3
+          editor.value = value
+          editor.setAttribute("aria-label", "Receipt footer")
+          cell.appendChild(editor)
+        } else {
+          cell.textContent = value
+        }
+        if (index > 0) {
+          if (!(index === 2 && values[1] === "receipt_footer")) {
+            cell.contentEditable = "true"
+            cell.setAttribute("aria-label", index === 1 ? "Setting key" : "Setting value")
+          }
+        }
+        row.appendChild(cell)
+      })
+      var actions = document.createElement("td")
+      actions.className = "text-center"
+      var saveButton = document.createElement("button")
+      saveButton.type = "button"
+      saveButton.className = "btn btn-sm btn-primary mr-1"
+      saveButton.setAttribute("aria-label", "Save setting")
+      saveButton.innerHTML = '<i class="fa fa-save" aria-hidden="true"></i>'
+      saveButton.addEventListener("click", function () { onSaveConfig(id) })
+      var cancelButton = document.createElement("button")
+      cancelButton.type = "button"
+      cancelButton.className = "btn btn-sm btn-secondary"
+      cancelButton.setAttribute("aria-label", "Cancel editing")
+      cancelButton.innerHTML = '<i class="fa fa-xmark" aria-hidden="true"></i>'
+      cancelButton.addEventListener("click", allConfigs)
+      actions.appendChild(saveButton)
+      actions.appendChild(cancelButton)
+      row.appendChild(actions)
     }
 
     function onSaveConfig(id) {
-      var changeConfigID = document.getElementById("config_ID_" + id).innerHTML
-      var changeConfigKey = document.getElementById("config_key_" + id).innerHTML
-      var changeConfigValue = document.getElementById("config_value_" + id).innerHTML
+      var changeConfigKey = document.getElementById("config_key_" + id).textContent.trim()
+      var configValueCell = document.getElementById("config_value_" + id)
+      var footerEditor = configValueCell.querySelector("textarea")
+      var changeConfigValue = footerEditor ? footerEditor.value : configValueCell.textContent
 
-      if (changeConfigKey == "" || changeConfigValue == "") {
+      if (!changeConfigKey || !changeConfigValue.trim()) {
         alertE("Config key, config name or price should not empty")
         return
       }
 
+      lsDB = newSessionDB()
       var registeredConfig = lsDB.queryAll("config", {
         query: { key: changeConfigKey }
       })
-      if (registeredConfig.length > 0) {
-        if (registeredConfig[0].config_key == changeConfigKey && registeredConfig[0].ID != id) {
-          alertE("Config key already used")
-          return
-        }
+      if (registeredConfig.some(function (config) { return Number(config.ID) !== Number(id) })) {
+        alertE("Config key already used")
+        return
       }
-
-      document.getElementById("config_data_" + id).innerHTML = `
-                <td id="config_ID_${id}">${changeConfigID}</td>
-                <td id="config_key_${id}">${changeConfigKey}</td>
-                <td id="config_value_${id}">${changeConfigValue}</td>
-                <td style="text-align:center">
-                  <button class="btn btn-sm btn-secondary" onclick="onEditConfig(${id})">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="onDeleteConfig(${id})">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>`
 
       lsDB.update("config", { ID: id }, function (row) {
         row.key = changeConfigKey
@@ -321,97 +374,44 @@
         return row
       })
       lsDB.commit()
+      allConfigs()
     }
 
     function onDeleteConfig(id) {
-      lsDB.deleteRows("config", { ID: id })
-      lsDB.commit()
-      document.getElementById("config_data_" + id).remove()
+      confirmAction("Delete this configuration setting?", function () {
+        lsDB = newSessionDB()
+        lsDB.deleteRows("config", { ID: id })
+        lsDB.commit()
+        allConfigs()
+      }, "Delete setting")
     }
 
     function onSearchConfig() {
       var filterType = document.getElementById("filter_type").value
-      var filterValue = document.getElementById("filter_value").value
-
-      var newQuery = {}
-      if (filterType == "default") {
-        document.getElementById("filter_value").value = ""
-        allConfigs()
-        return
-      } else {
-        newQuery = function (row) {
-          if (row[filterType].toLowerCase().match(filterValue.toLowerCase())) {
-            return true
-          } else {
-            return false
-          }
-        }
-      }
-
-      var listConfig = lsDB.queryAll("config", {
-        query: newQuery
-      })
-      if (listConfig.length == 0) {
-        document.getElementById("config_list").innerHTML = ""
+      var filterValue = document.getElementById("filter_value").value.trim().toLowerCase()
+      lsDB = newSessionDB()
+      var configs = lsDB.queryAll("config")
+      if (!filterValue || filterType === "default") {
+        renderConfigs(configs)
         return
       }
-
-      configList = ``
-      listConfig.forEach(function (value) {
-
-        var singleDataValues = Object.values(value)
-        var singleDataKeys = Object.keys(value)
-        var singleDataRow = ``
-        singleDataValues.forEach(function (va, i) {
-          singleDataRow += `<td id="config_${singleDataKeys[i]}_${singleDataValues[0]}">${va}</td>`
-        })
-
-        configList += `
-              <tr id="config_data_${singleDataValues[0]}">
-                ${singleDataRow}
-                <td style="text-align:center">
-                  <button class="btn btn-sm btn-danger" onclick="onDeleteConfig(${singleDataValues[0]})">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                  <button class="btn btn-sm btn-success" onclick="onEditConfig(${singleDataValues[0]})">
-                    <i class="fa fa-edit"></i>
-                </button>
-                </td>
-              </tr>`
-      })
-
-      document.getElementById("config_list").innerHTML = configList
+      renderConfigs(configs.filter(function (config) {
+        return String(config[filterType] || "").toLowerCase().includes(filterValue)
+      }))
     }
 
     function onDownloadConfig() {
-      var listConfig = lsDB.queryAll("config")
+      var listConfig = newSessionDB().queryAll("config")
       if (listConfig.length == 0) {
+        alertE("There are no configuration values to export yet")
         return
       }
 
-      var header = Object.keys(listConfig[0]).join(",") + "\n"
-      var configCSV = ""
-      listConfig.forEach(function (value, i) {
-        var { ID, ...valueWithoutID } = value
-        if (i == 0) { // first iteration
-          configCSV += Object.keys(valueWithoutID).join(",") + "\n"
-          configCSV += Object.values(valueWithoutID).join(",") + "\n"
-        }
-        else if (i + 1 == listConfig.length) { // last iteration
-          configCSV += Object.values(valueWithoutID).join(",")
-        } else {
-          configCSV += Object.values(valueWithoutID).join(",") + "\n"
-        }
+      var rows = [["key", "value"]]
+      listConfig.forEach(function (config) {
+        rows.push([config.key, config.value])
       })
-
-      var csv_file, download_link
-      csv_file = new Blob([configCSV], { type: "text/csv" })
-      download_link = document.createElement("a")
-      download_link.download = "config.csv"
-      download_link.href = window.URL.createObjectURL(csv_file)
-      download_link.style.display = "none"
-      document.body.appendChild(download_link)
-      download_link.click()
+      downloadCSV("config.csv", rows)
     }
 
     function onUploadConfig() {
@@ -425,62 +425,74 @@
 
     function onUploadConfigProcess() {
       var configFile = document.getElementById("config_file")
-      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/
-      if (regex.test(configFile.value.toLowerCase())) {
-        if (typeof (FileReader) != "undefined") {
-          var reader = new FileReader()
-          reader.onload = function (e) {
-            var configJSON = csvToJSON(e.target.result)
-            if (configJSON) {
-              lsDB.truncate("config")
-              configJSON.forEach(function (value) {
-                lsDB.insert("config", value)
-              })
-              lsDB.commit()
-              allConfigs()
-            } else {
-              alertE("Error, please re-validate your file");
-            }
-          }
-          reader.readAsText(configFile.files[0]);
-        } else {
-          alertE("This browser does not support HTML5");
-        }
-      } else {
-        alertE("Please upload a valid CSV file");
+      var file = configFile.files && configFile.files[0]
+      if (!file || !/\.csv$/i.test(file.name)) {
+        alertE("Please choose a valid CSV file")
+        return
       }
+
+      var reader = new FileReader()
+      reader.onload = function () {
+        var configJSON
+        try {
+          configJSON = csvToJSON(reader.result)
+        } catch (error) {
+          alertE(error.message)
+          return
+        }
+
+        if (!configJSON) {
+          alertE("CSV must include key and value columns")
+          return
+        }
+
+        lsDB = newSessionDB()
+        lsDB.truncate("config")
+        configJSON.forEach(function (config) {
+          lsDB.insert("config", config)
+        })
+        lsDB.commit()
+        allConfigs()
+      }
+      reader.onerror = function () {
+        alertE("Could not read the selected CSV file")
+      }
+      reader.readAsText(file)
     }
 
     function csvToJSON(csv) {
-      var lines = csv.split("\n");
-      var result = [];
-      var headers = lines[0].split(",");
-
-      for (var i = 1; i < lines.length; i++) {
-        var obj = {};
-        var currentline = lines[i].split(",")
-        for (var j = 0; j < headers.length; j++) {
-          var val = currentline[j]
-          if (j + 1 == 2 && currentline.length > 2) { // indicating value contains comma in value
-            currentline.shift() // remove first array
-            val = currentline.join(",") // then compact it 
-          }
-          obj[headers[j]] = val
-        }
-        result.push(obj)
-      }
-
-      const unique = new Set()
-      const anyDuplicateConfigKey = result.some(element => unique.size === unique.add(element.key).size)
-      if (anyDuplicateConfigKey) {
+      var rows = parseCSV(String(csv || "").replace(/^\uFEFF/, ""))
+      if (rows.length < 2) {
         return false
       }
 
+      var headers = rows[0].map(function (header) { return header.trim() })
+      if (headers.indexOf("key") === -1 || headers.indexOf("value") === -1) {
+        return false
+      }
+
+      var seenKeys = new Set()
+      var result = rows.slice(1).map(function (row) {
+        var config = {}
+        headers.forEach(function (header, index) {
+          config[header] = row[index] || ""
+        })
+        return { key: config.key.trim(), value: config.value }
+      })
+      if (result.some(function (config) {
+        if (!config.key || !config.value || seenKeys.has(config.key)) {
+          return true
+        }
+        seenKeys.add(config.key)
+        return false
+      })) {
+        return false
+      }
       return result
     }
 
     function onFactoryResetClicked() {
-      lsDB.drop("poslite")      
+      lsDB.drop("poslite")
       location.reload()
     }
 

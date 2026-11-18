@@ -2,175 +2,1350 @@
 <html lang="en">
 
 <head>
-  <title>POS Lite</title>
-
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-16.png">
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-32.png">
-  <link rel="icon" type="image/png" sizes="96x96"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-96.png">
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="Description" content="POS Lite" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Review and export POS Lite sales transactions.">
   <meta name="author" content="POS Lite">
+  <title>Sales report · POS Lite</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/cK1Ss7vL/poslite-logo.png">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #171717;
+      --paper: #fffdf6;
+      --canvas: #f5f0e5;
+      --muted: #6b675f;
+      --yellow: #ffd84d;
+      --blue: #a9d8ff;
+      --pink: #ffb6c8;
+      --green: #b8efc5;
+      --line: 2px solid var(--ink);
+      --shadow: 5px 5px 0 var(--ink);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--canvas);
+      background-image: radial-gradient(#d7cebd 0.8px, transparent 0.8px);
+      background-size: 15px 15px;
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a,
+    input,
+    select {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .topbar,
+    .brand,
+    .nav-links,
+    .page-heading,
+    .heading-actions,
+    .toolbar,
+    .search-controls,
+    .section-heading,
+    .table-heading,
+    .operation-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar {
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+
+    .brand {
+      gap: 11px;
+      color: var(--ink);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: var(--line);
+      background: var(--yellow);
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 19px;
+    }
+
+    .brand-name {
+      font-size: 19px;
+    }
+
+    .brand-name span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 10px 13px;
+      border: 2px solid transparent;
+      border-radius: 7px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      border-color: var(--ink);
+      background: var(--paper);
+      box-shadow: 2px 2px 0 var(--ink);
+      outline: none;
+      transform: translate(-1px, -1px);
+    }
+
+    .nav-links a[aria-current="page"] {
+      border: var(--line);
+      background: var(--yellow);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .page-heading {
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 950;
+      letter-spacing: -0.065em;
+      line-height: 1;
+    }
+
+    .page-intro {
+      margin: 11px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .heading-actions {
+      gap: 10px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 43px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 10px 15px;
+      border: var(--line);
+      border-radius: 7px;
+      background: var(--paper);
+      box-shadow: 3px 3px 0 var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform 100ms ease, box-shadow 100ms ease;
+    }
+
+    .button:hover {
+      color: var(--ink);
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--ink);
+      text-decoration: none;
+    }
+
+    .button:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .button:focus-visible,
+    .icon-button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid #3475ff;
+      outline-offset: 3px;
+    }
+
+    .button-primary {
+      background: var(--yellow);
+    }
+
+    .button-small {
+      min-height: 34px;
+      padding: 6px 10px;
+      box-shadow: 2px 2px 0 var(--ink);
+      font-size: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      min-height: 126px;
+      padding: 18px 20px;
+      border: var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card:nth-child(2) {
+      background: var(--blue);
+    }
+
+    .summary-card:nth-child(3) {
+      background: var(--pink);
+    }
+
+    .summary-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .summary-value {
+      margin-top: 13px;
+      font-size: clamp(25px, 4vw, 34px);
+      font-weight: 950;
+      letter-spacing: -0.055em;
+      line-height: 1;
+    }
+
+    .summary-note {
+      margin-top: 7px;
+      color: #39362f;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .panel {
+      overflow: hidden;
+      border: var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .toolbar {
+      justify-content: space-between;
+      gap: 18px;
+      padding: 19px 21px;
+      border-bottom: var(--line);
+      background: #fff9e7;
+    }
+
+    .section-heading {
+      gap: 11px;
+    }
+
+    .section-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: var(--line);
+      border-radius: 7px;
+      background: var(--green);
+      font-size: 15px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+    }
+
+    .section-subtitle {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .search-controls {
+      gap: 8px;
+    }
+
+    .search-controls select,
+    .search-controls input {
+      height: 40px;
+      border: var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .search-controls select {
+      min-width: 136px;
+      padding: 0 10px;
+      font-weight: 750;
+    }
+
+    .search-controls input {
+      width: min(240px, 24vw);
+      padding: 0 12px;
+    }
+
+    .search-controls input::placeholder {
+      color: #77736b;
+    }
+
+    .icon-button {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: var(--line);
+      border-radius: 6px;
+      background: var(--yellow);
+      box-shadow: 2px 2px 0 var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      background: #ffe479;
+    }
+
+    .table-heading {
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 21px;
+      border-bottom: 1px solid #e7e0d1;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 12px 20px;
+      border-top: 1px solid #e9e3d6;
+    }
+
+    .pagination button {
+      min-height: 34px;
+      padding: 6px 12px;
+      border: var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      box-shadow: 2px 2px 0 var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .pagination button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .pagination-status {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    #sales_transactions_table {
+      min-width: 1220px;
+      table-layout: fixed;
+    }
+
+    #sales_transactions_table th:nth-child(1),
+    #sales_transactions_table td:nth-child(1) {
+      width: 52px;
+    }
+
+    #sales_transactions_table th:nth-child(2),
+    #sales_transactions_table td:nth-child(2) {
+      width: 145px;
+    }
+
+    #sales_transactions_table th:nth-child(3),
+    #sales_transactions_table td:nth-child(3) {
+      width: 165px;
+    }
+
+    #sales_transactions_table th:nth-child(4),
+    #sales_transactions_table td:nth-child(4),
+    #sales_transactions_table th:nth-child(5),
+    #sales_transactions_table td:nth-child(5) {
+      width: 120px;
+    }
+
+    #sales_transactions_table th:nth-child(6),
+    #sales_transactions_table td:nth-child(6),
+    #sales_transactions_table th:nth-child(7),
+    #sales_transactions_table td:nth-child(7),
+    #sales_transactions_table th:nth-child(8),
+    #sales_transactions_table td:nth-child(8) {
+      width: 85px;
+    }
+
+    #sales_transactions_table th:nth-child(9),
+    #sales_transactions_table td:nth-child(9) {
+      width: 100px;
+    }
+
+    #sales_transactions_table th:nth-child(10),
+    #sales_transactions_table td:nth-child(10) {
+      width: 250px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead {
+      background: #f3eddf;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e9e3d6;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #4a463e;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      font-size: 12px;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: #fff9e9;
+    }
+
+    .numeric {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .transaction-id {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .reference {
+      display: inline-block;
+      padding: 5px 7px;
+      border: 1.5px solid var(--ink);
+      border-radius: 5px;
+      background: #fff;
+      font-size: 11px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .transaction-date {
+      min-width: 150px;
+      color: #454138;
+      white-space: nowrap;
+    }
+
+    .customer-cell,
+    .payment-type-cell {
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .total-cell {
+      font-weight: 900;
+    }
+
+    .operation-group {
+      justify-content: flex-start;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .delete-button {
+      background: var(--pink);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 8px;
+      border: 1.5px solid var(--ink);
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .status-paid {
+      background: var(--green);
+    }
+
+    .status-unpaid {
+      background: var(--pink);
+    }
+
+    .app-modal {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgb(23 23 23 / 58%);
+    }
+
+    .app-modal.is-open {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(900px, 100%);
+      max-height: min(90vh, 900px);
+      overflow: auto;
+      border: 3px solid var(--ink);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .modal-header,
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 2px solid var(--ink);
+      background: #fff9e7;
+    }
+
+    .modal-footer {
+      justify-content: flex-end;
+      border-top: 2px solid var(--ink);
+      border-bottom: 0;
+      background: var(--paper);
+    }
+
+    .modal-header h2 {
+      font-size: 19px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-close {
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .receipt-modal-panel {
+      width: min(760px, 100%);
+      height: min(90vh, 950px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .receipt-modal-panel .modal-header {
+      flex: 0 0 auto;
+    }
+
+    .receipt-modal-frame {
+      width: 100%;
+      flex: 1;
+      border: 0;
+      background: var(--canvas);
+    }
+
+    #customAlert {
+      position: fixed;
+      z-index: 1100;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .custom-alert-backdrop {
+      position: fixed;
+      z-index: 1100;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgb(23 23 23 / 58%);
+      pointer-events: auto;
+    }
+
+    .custom-alert-dialog {
+      width: min(440px, 100%);
+      padding: 24px;
+      border: 3px solid var(--ink);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .custom-alert-dialog h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .custom-alert-dialog p {
+      margin: 12px 0 20px;
+      overflow-wrap: anywhere;
+    }
+
+    .custom-alert-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .custom-alert-close,
+    .custom-alert-cancel {
+      min-height: 40px;
+      padding: 8px 16px;
+      border: var(--line);
+      border-radius: 6px;
+      box-shadow: 2px 2px 0 var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    .custom-alert-close {
+      background: var(--yellow);
+    }
+
+    .custom-alert-cancel {
+      background: var(--paper);
+    }
+
+    .empty-state {
+      padding: 54px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 15px;
+      place-items: center;
+      border: var(--line);
+      border-radius: 12px;
+      background: var(--yellow);
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 22px;
+    }
+
+    .empty-state h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .empty-state p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      margin: 20px 2px 0;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      clip-path: inset(50%);
+    }
+
+    @media (max-width: 760px) {
+      .app-shell {
+        width: min(100% - 24px, 600px);
+        padding-top: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 28px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 1px;
+      }
+
+      .nav-links a {
+        padding: 9px 10px;
+        font-size: 12px;
+      }
+
+      .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .heading-actions {
+        width: 100%;
+      }
+
+      .heading-actions .button {
+        flex: 1;
+      }
+
+      .summary-grid {
+        gap: 10px;
+      }
+
+      .summary-card {
+        min-height: 110px;
+        padding: 14px;
+        box-shadow: 3px 3px 0 var(--ink);
+      }
+
+      .toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .search-controls input {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+      }
+
+      .search-controls select {
+        min-width: 112px;
+      }
+
+      .table-heading {
+        padding-right: 16px;
+        padding-left: 16px;
+      }
+
+      .panel {
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+    }
+
+    @media (max-width: 460px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        min-height: 93px;
+      }
+
+      .summary-value {
+        margin-top: 8px;
+        font-size: 27px;
+      }
+
+      .search-controls {
+        flex-wrap: wrap;
+      }
+
+      .search-controls select {
+        flex: 1;
+      }
+
+      .search-controls input {
+        order: 2;
+        width: 100%;
+        flex-basis: calc(100% - 50px);
+      }
+
+      .search-controls .icon-button {
+        order: 3;
+      }
+
+      .app-modal {
+        padding: 10px;
+      }
+
+      .modal-header,
+      .modal-body,
+      .modal-footer {
+        padding: 14px;
+      }
+
+      th,
+      td {
+        padding: 12px 11px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
-
-      <div class="col-lg-12">
-        <ul class="nav nav-pills justify-content-end p-2" style="width:100%; background-color:aliceblue">
-          <li class="nav-item">
-            <a class="nav-link" href="./index.html">Transaction</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./product.html">Product</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Sales</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./config.html">Config</a>
-          </li>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="POS Lite home">
+        <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-store"></i></span>
+        <span class="brand-name">POS LITE<span>Point of sale</span></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul class="nav-links">
+          <li><a href="./index.html"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Checkout</a></li>
+          <li><a href="./sales.html" aria-current="page"><i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+              Sales</a></li>
+          <li><a href="./product.html"><i class="fa-solid fa-box" aria-hidden="true"></i> Products</a></li>
+          <li><a href="./config.html"><i class="fa-solid fa-gear" aria-hidden="true"></i> Config</a></li>
         </ul>
-      </div>
+      </nav>
+    </header>
 
-      <div class="col-lg-12 mt-3">
-        <h2 class="alert alert-primary text-center">
-          Sales
-        </h2>
-      </div>
+    <main>
+      <section class="page-heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Your business at a glance</p>
+          <h1 id="page-title">Sales report<span aria-hidden="true">.</span></h1>
+          <p class="page-intro">Track every checkout and keep your daily numbers in view.</p>
+        </div>
+        <div class="heading-actions">
+          <button class="button button-primary" type="button" onclick="onDownloadTransaction()">
+            <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+            Export transactions
+          </button>
+        </div>
+      </section>
 
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body p-3">
-            <div class="row">
-              <div class="col-lg-4 mb-2">
-                <div class="row no-gutters">
-                  <div class="col mr-1">
-                    <button type="button" class="btn btn-info btn-block" onclick="onDownloadTransaction()">Download
-                      Transaction</button>
-                  </div>
-                </div>
-              </div>
+      <section class="summary-grid" aria-label="Sales summary">
+        <article class="summary-card">
+          <div class="summary-label"><i class="fa-solid fa-receipt" aria-hidden="true"></i> All transactions</div>
+          <div class="summary-value" id="total_transactions">0</div>
+          <div class="summary-note">Saved on this device</div>
+        </article>
+        <article class="summary-card">
+          <div class="summary-label"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Today's sales</div>
+          <div class="summary-value" id="today_transactions">0</div>
+          <div class="summary-note">Completed checkouts today</div>
+        </article>
+        <article class="summary-card">
+          <div class="summary-label"><i class="fa-solid fa-coins" aria-hidden="true"></i> Today's revenue</div>
+          <div class="summary-value" id="today_revenue">0</div>
+          <div class="summary-note">Based on transaction totals</div>
+        </article>
+      </section>
 
-              <div class="col-lg-4 offset-lg-4 mb-2">
-                <div class="input-group">
-                  <input id="filter_value" type="text" class="form-control" placeholder="Filter Value"
-                    aria-label="Filter Value" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <select id="filter_type" class="custom-select" id="inputGroupSelect04">
-                      <option value="default" selected>Choose filter</option>
-                      <option value="key">Key</option>
-                      <option value="value">Value</option>
-                    </select>
-                    <button class="btn btn-info btn-rounded" onclick="onSearchTransaction()">
-                      <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table id="datatable" class="table table-sm table-striped mb-0">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Reference</th>
-                    <th>Date & Time</th>
-                    <th style="text-align:end">Total</th>
-                    <th style="text-align:end">Payment</th>
-                    <th style="text-align:end">Change</th>
-                    <th style="text-align:center">Operation</th>
-                  </tr>
-                </thead>
-                <tbody id="transaction_list"></tbody>
-              </table>
+      <section class="panel" aria-labelledby="transactions-title">
+        <div class="toolbar">
+          <div class="section-heading">
+            <span class="section-icon" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
+            <div>
+              <h2 id="transactions-title">Transaction history</h2>
+              <p class="section-subtitle">Search, reopen a sale at checkout, view receipts, or remove a transaction.</p>
             </div>
           </div>
+          <form class="search-controls" onsubmit="onSearchTransaction(); return false;">
+            <label class="sr-only" for="filter_type">Search by</label>
+            <select id="filter_type">
+              <option value="all">All fields</option>
+              <option value="reference">Reference</option>
+              <option value="date">Date</option>
+              <option value="customer">Customer</option>
+              <option value="product">Product</option>
+              <option value="payment_type">Payment type</option>
+              <option value="status">Paid status</option>
+              <option value="amount">Amount</option>
+            </select>
+            <label class="sr-only" for="filter_value">Search transactions</label>
+            <input id="filter_value" type="search" placeholder="Search transactions…" autocomplete="off">
+            <button class="icon-button" type="submit" aria-label="Search transactions">
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            </button>
+            <button class="icon-button" type="button" onclick="clearTransactionSearch()" aria-label="Clear search">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </form>
         </div>
-      </div>
-    </div>
-
-    <!-- Custom Alert -->
-    <div id="customAlert"></div>
-
+        <div class="table-heading">
+          <span id="transaction_count">0 records</span>
+          <span>Newest transactions first</span>
+        </div>
+        <div class="table-wrap">
+          <table id="sales_transactions_table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Reference</th>
+                <th scope="col">Date &amp; time</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Payment type</th>
+                <th scope="col" class="numeric">Total</th>
+                <th scope="col" class="numeric">Payment</th>
+                <th scope="col" class="numeric">Change</th>
+                <th scope="col">Status</th>
+                <th scope="col" class="numeric">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transaction_list"></tbody>
+          </table>
+        </div>
+        <nav class="pagination" aria-label="Transaction pages">
+          <button type="button" id="previous_page" onclick="changeTransactionPage(-1)">Previous</button>
+          <span class="pagination-status" id="pagination_status" aria-live="polite"></span>
+          <button type="button" id="next_page" onclick="changeTransactionPage(1)">Next</button>
+        </nav>
+      </section>
+      <p class="footer-note">Your sales data is stored locally in this browser.</p>
+    </main>
   </div>
 
-  <!-- Import JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+  <div class="app-modal" id="receipt_modal" aria-hidden="true">
+    <section class="modal-panel receipt-modal-panel" role="dialog" aria-modal="true"
+      aria-labelledby="receipt_modal_title">
+      <header class="modal-header">
+        <h2 id="receipt_modal_title">Transaction receipt</h2>
+        <div class="heading-actions">
+          <button class="button button-small button-primary" type="button" onclick="printReceiptModal()">
+            <i class="fa-solid fa-print" aria-hidden="true"></i> Print
+          </button>
+          <button class="modal-close" type="button" aria-label="Close receipt"
+            onclick="closeReceiptModal()">&times;</button>
+        </div>
+      </header>
+      <iframe class="receipt-modal-frame" id="receipt_modal_frame" title="Transaction receipt"></iframe>
+    </section>
+  </div>
+
   <script src="js/localstoragedb.min.js"></script>
-  <script src="js/localstoragedbcustom.js"></script>
-  <script src="js/customalert.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/alerts.js"></script>
+  <script>
+    var transactions = [];
+    var transactionPage = 1;
+    var transactionsPerPage = 10;
 
-  <!-- Custom JS -->
-  <script type="text/javascript">
+    function allTransactions() {
+      lsDB = newSessionDB();
+      transactions = lsDB.queryAll("sales", {
+        sort: [["ID", "DESC"]]
+      });
 
-    allTransactions()
-
-    function allTransactions(page = 1) {
-      var startIn = 0
-      if (page > 1) {
-        startIn = page * 10
-      }
-
-      var listTransaction = lsDB.queryAll("sales", {start: startIn, limit: 10, sort: [["ID", "DESC"]]})
-      if (listTransaction.length == 0) {
-        return
-      }
-
-      transactionList = ``
-      listTransaction.forEach(function (value) {
-        var singleDataValues = Object.values(value)
-        var singleDataKeys = Object.keys(value)
-        var singleDataRow = ``
-        singleDataValues.forEach(function (va, i) {
-          if (!(singleDataKeys[i] == "timestamp" ||  singleDataKeys[i] == "data")) {
-            if (/total|payment|change/.test(singleDataKeys[i])) {
-              singleDataRow += `<td style="text-align:end">${va}</td>`
-            } else {
-              singleDataRow += `<td>${va}</td>`
-            }
-          }
-        })
-
-        transactionList += `
-              <tr id="transaction_data_${singleDataValues[0]}">
-                ${singleDataRow}
-                <td style="text-align:center">
-                  <button class="btn btn-sm btn-secondary" onclick="onEditTransaction(${singleDataValues[0]})">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="onDeleteTransaction(${singleDataValues[0]})">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>`
-      })
-
-      document.getElementById("transaction_list").innerHTML = transactionList
+      updateSummary(transactions);
+      onSearchTransaction();
     }
 
-  </script>
+    function updateSummary(records) {
+      var today = new Date().toLocaleDateString("sv-SE");
+      var todayRecords = records.filter(function (record) {
+        return String(record.datetime || "").substring(0, 10) === today;
+      });
+      var todayTotal = todayRecords.reduce(function (sum, record) {
+        return sum + (Number(record.total) || 0);
+      }, 0);
 
+      document.getElementById("total_transactions").textContent = records.length;
+      document.getElementById("today_transactions").textContent = todayRecords.length;
+      document.getElementById("today_revenue").textContent = formatNumber(todayTotal);
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString();
+    }
+
+    function formatPaymentType(value) {
+      return String(value || "cash").replace(/_/g, " ").replace(/\b\w/g, function (letter) {
+        return letter.toUpperCase();
+      });
+    }
+
+    function renderTransactions(records) {
+      var transactionList = document.getElementById("transaction_list");
+      transactionList.textContent = "";
+      document.getElementById("transaction_count").textContent =
+        records.length + (records.length === 1 ? " record" : " records");
+
+      var pageCount = Math.max(1, Math.ceil(records.length / transactionsPerPage));
+      transactionPage = Math.min(transactionPage, pageCount);
+      updateTransactionPagination(pageCount);
+
+      if (records.length === 0) {
+        var emptyRow = document.createElement("tr");
+        var emptyCell = document.createElement("td");
+        emptyCell.colSpan = 10;
+        emptyCell.innerHTML =
+          '<div class="empty-state"><span class="empty-icon" aria-hidden="true"><i class="fa-solid fa-receipt"></i></span>' +
+          '<h3>No transactions found</h3><p>Completed sales will show up here. Try another search or start a checkout.</p></div>';
+        emptyRow.appendChild(emptyCell);
+        transactionList.appendChild(emptyRow);
+        return;
+      }
+
+      var startIndex = (transactionPage - 1) * transactionsPerPage;
+      records.slice(startIndex, startIndex + transactionsPerPage).forEach(function (record) {
+        var row = document.createElement("tr");
+        row.id = "transaction_data_" + record.ID;
+
+        appendCell(row, record.ID, "transaction-id");
+        var referenceCell = appendCell(row, record.reference || "—");
+        var referenceBadge = document.createElement("span");
+        referenceBadge.className = "reference";
+        referenceBadge.textContent = record.reference || "No reference";
+        referenceCell.textContent = "";
+        referenceCell.appendChild(referenceBadge);
+
+        appendCell(row, record.datetime || "—", "transaction-date");
+        appendCell(row, record.customer_name || "Walk-in", "customer-cell");
+        appendCell(row, formatPaymentType(record.payment_type), "payment-type-cell");
+        appendCell(row, formatNumber(record.total), "numeric total-cell");
+        appendCell(row, formatNumber(record.payment), "numeric");
+        appendCell(row, formatNumber(record.change), "numeric");
+        var statusCell = appendCell(row, "");
+        var statusBadge = document.createElement("span");
+        statusBadge.className = "status-badge " + (record.paid ? "status-paid" : "status-unpaid");
+        statusBadge.textContent = record.paid ? "Paid" : "Unpaid";
+        statusCell.appendChild(statusBadge);
+
+        var actionCell = document.createElement("td");
+        actionCell.className = "numeric";
+        var actionGroup = document.createElement("div");
+        actionGroup.className = "operation-group";
+
+        var editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.className = "button button-small";
+        editButton.setAttribute("aria-label", "Edit transaction " + (record.reference || record.ID));
+        editButton.innerHTML = '<i class="fa-solid fa-pen" aria-hidden="true"></i> Edit';
+        editButton.addEventListener("click", function () {
+          window.location.href = "./index.html?edit=" + encodeURIComponent(record.ID);
+        });
+        actionGroup.appendChild(editButton);
+
+        var receiptButton = document.createElement("button");
+        receiptButton.type = "button";
+        receiptButton.className = "button button-small";
+        receiptButton.setAttribute("aria-label", "View receipt for " + (record.reference || "transaction " + record.ID));
+        receiptButton.innerHTML = '<i class="fa-solid fa-receipt" aria-hidden="true"></i> Receipt';
+        receiptButton.addEventListener("click", function () {
+          openReceiptModal(record.reference || "");
+        });
+        actionGroup.appendChild(receiptButton);
+
+        var deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "button button-small delete-button";
+        deleteButton.setAttribute("aria-label", "Delete transaction " + (record.reference || record.ID));
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        deleteButton.addEventListener("click", function () {
+          onDeleteTransaction(record.ID);
+        });
+        actionGroup.appendChild(deleteButton);
+        actionCell.appendChild(actionGroup);
+        row.appendChild(actionCell);
+        transactionList.appendChild(row);
+      });
+    }
+
+    function updateTransactionPagination(pageCount) {
+      var pagination = document.querySelector(".pagination");
+      pagination.hidden = pageCount <= 1;
+      document.getElementById("pagination_status").textContent =
+        "Page " + transactionPage + " of " + pageCount;
+      document.getElementById("previous_page").disabled = transactionPage <= 1;
+      document.getElementById("next_page").disabled = transactionPage >= pageCount;
+    }
+
+    function changeTransactionPage(direction) {
+      var records = getMatchingTransactions();
+      var pageCount = Math.max(1, Math.ceil(records.length / transactionsPerPage));
+      var nextPage = transactionPage + direction;
+      if (nextPage < 1 || nextPage > pageCount) {
+        return;
+      }
+      transactionPage = nextPage;
+      renderTransactions(records);
+    }
+
+    function appendCell(row, value, className) {
+      var cell = document.createElement("td");
+      cell.textContent = value === null || value === undefined ? "" : String(value);
+      if (className) {
+        cell.className = className;
+      }
+      row.appendChild(cell);
+      return cell;
+    }
+
+    function onSearchTransaction() {
+      transactionPage = 1;
+      renderTransactions(getMatchingTransactions());
+    }
+
+    function getMatchingTransactions() {
+      var filterType = document.getElementById("filter_type").value;
+      var filterValue = document.getElementById("filter_value").value.trim().toLowerCase();
+      if (!filterValue) {
+        return transactions;
+      }
+
+      var matchingTransactions = transactions.filter(function (record) {
+        var items = Array.isArray(record.data) ? record.data : [];
+        var productText = items.map(function (item) {
+          return [item.product_code, item.product_name].join(" ");
+        }).join(" ");
+        var searchableValues;
+
+        if (filterType === "reference") {
+          searchableValues = [record.reference];
+        } else if (filterType === "date") {
+          searchableValues = [record.datetime];
+        } else if (filterType === "customer") {
+          searchableValues = [record.customer_name];
+        } else if (filterType === "product") {
+          searchableValues = [productText];
+        } else if (filterType === "payment_type") {
+          searchableValues = [record.payment_type || "cash"];
+        } else if (filterType === "status") {
+          searchableValues = [record.paid ? "paid" : "unpaid"];
+        } else if (filterType === "amount") {
+          searchableValues = [record.total, record.payment, record.change];
+        } else {
+          searchableValues = [
+            record.ID,
+            record.reference,
+            record.datetime,
+            record.customer_name,
+            record.payment_type || "cash",
+            record.total,
+            record.payment,
+            record.change,
+            record.paid ? "paid" : "unpaid",
+            productText
+          ];
+        }
+
+        return searchableValues.some(function (value) {
+          return String(value === null || value === undefined ? "" : value)
+            .toLowerCase().includes(filterValue);
+        });
+      });
+
+      return matchingTransactions;
+    }
+
+    function clearTransactionSearch() {
+      document.getElementById("filter_value").value = "";
+      document.getElementById("filter_type").value = "all";
+      transactionPage = 1;
+      renderTransactions(transactions);
+    }
+
+    function onDownloadTransaction() {
+      lsDB = newSessionDB();
+      var records = lsDB.queryAll("sales", {
+        sort: [["ID", "DESC"]]
+      });
+      if (records.length === 0) {
+        window.alert("There are no transactions to export yet.");
+        return;
+      }
+
+      var header = ["ID", "Reference", "Date & time", "Customer", "Payment type", "Total", "Payment", "Change", "Paid", "Items"];
+      var rows = records.map(function (record) {
+        var items = Array.isArray(record.data) ? record.data.map(function (item) {
+          return (item.product_name || item.product_code || "Item") + " x " + (item.product_qty || 0);
+        }).join("; ") : "";
+        return [
+          record.ID,
+          record.reference,
+          record.datetime,
+          record.customer_name || "",
+          record.payment_type || "cash",
+          record.total,
+          record.payment,
+          record.change,
+          record.paid ? "Paid" : "Unpaid",
+          items
+        ];
+      });
+      var csv = [header].concat(rows).map(function (row) {
+        return row.map(csvValue).join(",");
+      }).join("\r\n");
+      var file = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+      var downloadLink = document.createElement("a");
+      var fileUrl = window.URL.createObjectURL(file);
+      downloadLink.href = fileUrl;
+      downloadLink.download = "pos-lite-transactions.csv";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+      window.setTimeout(function () {
+        window.URL.revokeObjectURL(fileUrl);
+      }, 1000);
+    }
+
+    function csvValue(value) {
+      var text = value === null || value === undefined ? "" : String(value);
+      if (/^[=+\-@\t\r]/.test(text)) {
+        text = "'" + text;
+      }
+      return '"' + text.replace(/"/g, '""') + '"';
+    }
+
+    function onDeleteTransaction(id) {
+      var record = transactions.find(function (item) {
+        return Number(item.ID) === Number(id);
+      });
+      if (!record) {
+        return;
+      }
+
+      var description = record.reference ? " " + record.reference : " #" + id;
+      confirmAction("Delete transaction" + description + "? This cannot be undone.", function () {
+        lsDB = newSessionDB();
+        lsDB.deleteRows("sales", { ID: Number(id) });
+        lsDB.commit();
+        allTransactions();
+      }, "Delete transaction");
+    }
+
+    function openReceiptModal(reference) {
+      var modalFrame = document.getElementById("receipt_modal_frame");
+      var receiptUrl = new URL("./receipt.html", window.location.href);
+      receiptUrl.searchParams.set("ref", reference);
+      receiptUrl.searchParams.set("embed", "1");
+      modalFrame.src = receiptUrl.toString();
+      setModalOpen("receipt_modal", true);
+      document.querySelector("#receipt_modal .modal-close").focus();
+    }
+
+    function closeReceiptModal() {
+      setModalOpen("receipt_modal", false);
+      document.getElementById("receipt_modal_frame").src = "about:blank";
+    }
+
+    function printReceiptModal() {
+      var modalFrame = document.getElementById("receipt_modal_frame");
+      if (modalFrame.contentWindow) {
+        modalFrame.contentWindow.print();
+      }
+    }
+
+    function setModalOpen(id, isOpen) {
+      var modal = document.getElementById(id);
+      modal.classList.toggle("is-open", isOpen);
+      modal.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
+
+    document.getElementById("receipt_modal").addEventListener("click", function (event) {
+      if (event.target === this) {
+        closeReceiptModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeReceiptModal();
+      }
+    });
+
+    document.getElementById("filter_value").addEventListener("input", onSearchTransaction);
+    allTransactions();
+  </script>
 </body>
 
 </html>
