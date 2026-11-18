@@ -2,133 +2,359 @@
 <html lang="en">
 
 <head>
-  <title>POS Lite</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="POS Lite transaction receipt.">
+  <title>Receipt · POS Lite</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/cK1Ss7vL/poslite-logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="./css/pos.css">
+  <style>
+    .receipt-shell {
+      width: min(720px, calc(100% - 32px));
+      margin: 36px auto;
+      padding-bottom: 48px;
+    }
 
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-16.png">
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-32.png">
-  <link rel="icon" type="image/png" sizes="96x96"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-96.png">
+    .receipt-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="Description" content="POS Lite" />
-  <meta name="author" content="POS Lite">
+    .receipt-card {
+      padding: clamp(22px, 5vw, 42px);
+      border: var(--line);
+      border-radius: 10px;
+      background: var(--paper);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    .receipt-header {
+      padding-bottom: 22px;
+      border-bottom: 2px dashed #b9b09f;
+      text-align: center;
+    }
+
+    .receipt-logo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 13px;
+      object-fit: contain;
+    }
+
+    .receipt-merchant {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .receipt-address {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: pre-line;
+    }
+
+    .receipt-title {
+      margin: 25px 0 14px;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .receipt-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 21px;
+    }
+
+    .receipt-meta-item {
+      padding: 11px 12px;
+      border: 1.5px solid var(--ink);
+      border-radius: 6px;
+      background: #fff9e7;
+    }
+
+    .receipt-meta-label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .receipt-meta-value {
+      font-size: 12px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .receipt-table th,
+    .receipt-table td {
+      padding: 11px 7px;
+      border-bottom: 1px solid #e8e1d4;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .receipt-table th {
+      background: #f3eddf;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .receipt-table .numeric {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .receipt-totals {
+      width: min(290px, 100%);
+      margin: 17px 0 0 auto;
+    }
+
+    .receipt-total-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 7px 0;
+      font-size: 12px;
+    }
+
+    .receipt-total-row.final {
+      margin-top: 5px;
+      padding: 12px;
+      border: var(--line);
+      border-radius: 6px;
+      background: var(--yellow);
+      font-size: 15px;
+      font-weight: 950;
+    }
+
+    .receipt-thanks {
+      margin: 27px 0 0;
+      padding-top: 18px;
+      border-top: 2px dashed #b9b09f;
+      color: #39362f;
+      font-size: 13px;
+      font-weight: 750;
+      text-align: center;
+      white-space: pre-line;
+    }
+
+    .receipt-empty {
+      padding: 36px 10px;
+      text-align: center;
+    }
+
+    .receipt-empty h1 {
+      font-size: 25px;
+    }
+
+    .receipt-embedded .receipt-shell {
+      width: 100%;
+      margin: 0;
+      padding: 14px;
+    }
+
+    .receipt-embedded .receipt-toolbar {
+      display: none;
+    }
+
+    @media (max-width: 520px) {
+      .receipt-shell {
+        width: calc(100% - 24px);
+        margin-top: 20px;
+      }
+
+      .receipt-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .receipt-table th,
+      .receipt-table td {
+        padding: 9px 5px;
+        font-size: 10px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .receipt-shell {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .receipt-toolbar {
+        display: none;
+      }
+
+      .receipt-card {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .receipt-meta-item,
+      .receipt-total-row.final {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+    }
+  </style>
 </head>
-<html>
 
 <body>
-  <div class="card" id="table_sales_card">
-    <div class="text-center" id="merchant_logo"></div>
-    <div class="text-center" id="merchant_info"></div>
-    <div class="card-body p-3">
-      <div id="receipt_info"></div>
+  <main class="receipt-shell">
+    <div class="receipt-toolbar">
+      <a class="button" href="./sales.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Sales report</a>
+      <button class="button button-primary" type="button" onclick="window.print()">
+        <i class="fa-solid fa-print" aria-hidden="true"></i> Print receipt
+      </button>
+    </div>
+    <article class="receipt-card" id="receipt">
+      <header class="receipt-header">
+        <img class="receipt-logo" id="merchant_logo" alt="Merchant logo" hidden>
+        <h1 class="receipt-merchant" id="merchant_name">POS Lite</h1>
+        <p class="receipt-address" id="merchant_address"></p>
+      </header>
+      <h2 class="receipt-title">Transaction receipt</h2>
+      <div class="receipt-meta" id="receipt_info"></div>
       <div class="table-responsive">
-        <table class="table table-sm table-striped mb-0" id="tableSalesData">
+        <table class="receipt-table">
           <thead>
             <tr>
-              <th style="width:75%">Product</th>
-              <th style="text-align:end">Qty</th>
-              <th style="text-align:end">Price</th>
-              <th style="text-align:end">Total</th>
+              <th scope="col">Product</th>
+              <th scope="col" class="numeric">Qty</th>
+              <th scope="col" class="numeric">Price</th>
+              <th scope="col" class="numeric">Total</th>
             </tr>
           </thead>
           <tbody id="tableSales"></tbody>
-          <tfoot class="bg-info" id="totalPrice"></tfoot>
         </table>
       </div>
-      <div class="mt-3 text-center" id="receipt_footer"></div>
-    </div>
-  </div>
+      <div class="receipt-totals" id="totalPrice"></div>
+      <p class="receipt-thanks" id="receipt_footer"></p>
+    </article>
+  </main>
 
-  <!-- Import JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
   <script src="js/localstoragedb.min.js"></script>
-  <script src="js/localstoragedbcustom.js"></script>
-  <script src="js/customalert.js"></script>
-
-  <script type="text/javascript">
-    function initReceipt() {
-      var params = (new URL(document.location)).searchParams;
-      var ref = params.get("ref");
-      var trx = lsDB.queryAll("sales", {
-        query: {
-          reference: ref
-        }
-      })
-
-      document.title += ` ${ref}`
-
-      document.getElementById("merchant_logo").innerHTML = `<img class="mt-3" id="merchant_logo" class="card-img-top" style="width: 5rem; align-self: center;" src="${queryConfig("merchant_logo")}" alt="Merchant Logo">`
-      document.getElementById("merchant_info").innerHTML = `
-        <p>
-          <br />
-          <b>
-            ${queryConfig("merchant_name")}
-          </b>
-          <br />
-          ${queryConfig("merchant_address")}
-        </p>
-        `
-
-      var headerInfo = `
-        <p>
-          Printed By : ${queryConfig("pic_name")}<br />
-          Reference : ${trx[0].reference}<br />
-          Date : ${trx[0].datetime}
-        </p>
-        `
-      document.getElementById("receipt_info").innerHTML = headerInfo
-
-      if (trx.length == 0) {
-        return
-      }
-
-      var trxData = trx[0].data
-      var tableData = ``
-      trxData.forEach(v => {
-        tableData += `
-        <tr>
-          <td>${v.product_name}</td>
-          <td style="text-align:end">${v.product_qty}</td>
-          <td style="text-align:end">${v.product_price}</td>
-          <td style="text-align:end">${v.product_price_total}</td>
-        </tr>`
-      })
-      document.getElementById("tableSales").innerHTML = tableData
-
-      var total
-      document.getElementById("totalPrice").innerHTML = `<tr>
-          <th>Total</th>
-          <th colspan="3" id="totalPriceTH" style='text-align:end'>${trx[0].total}</th>
-        </tr>
-        <tr>
-          <th>Payment</th>
-          <th <th colspan="3" id="totalPayment" style='text-align:end'>${trx[0].payment}</th>
-        </tr>
-        <tr>
-          <th>Change</th>
-          <th <th colspan="3" id="totalChange" style='text-align:end'>${trx[0].change}</th>
-        </tr>`
-
-      document.getElementById("receipt_footer").innerHTML = queryConfig("receipt_footer")
+  <script src="js/database.js"></script>
+  <script>
+    function setReceiptMeta(label, value) {
+      var item = document.createElement("div");
+      item.className = "receipt-meta-item";
+      var labelNode = document.createElement("span");
+      labelNode.className = "receipt-meta-label";
+      labelNode.textContent = label;
+      var valueNode = document.createElement("span");
+      valueNode.className = "receipt-meta-value";
+      valueNode.textContent = value || "—";
+      item.appendChild(labelNode);
+      item.appendChild(valueNode);
+      document.getElementById("receipt_info").appendChild(item);
     }
 
-    initReceipt()
+    function setReceiptTotal(label, value, isFinal) {
+      var row = document.createElement("div");
+      row.className = "receipt-total-row" + (isFinal ? " final" : "");
+      var labelNode = document.createElement("span");
+      labelNode.textContent = label;
+      var valueNode = document.createElement("strong");
+      valueNode.textContent = Number(value || 0).toLocaleString();
+      row.appendChild(labelNode);
+      row.appendChild(valueNode);
+      document.getElementById("totalPrice").appendChild(row);
+    }
 
+    function initReceipt() {
+      var reference = new URL(window.location.href).searchParams.get("ref");
+      if (!reference) {
+        showMissingReceipt();
+        return;
+      }
+
+      lsDB = newSessionDB();
+      var records = lsDB.queryAll("sales", { query: { reference: reference } });
+      if (records.length === 0) {
+        showMissingReceipt();
+        return;
+      }
+
+      var transaction = records[0];
+      document.title = "Receipt " + transaction.reference + " · POS Lite";
+      document.getElementById("merchant_name").textContent = queryConfig("merchant_name") || "POS Lite";
+      document.getElementById("merchant_address").textContent = queryConfig("merchant_address");
+      document.getElementById("receipt_footer").textContent = queryConfig("receipt_footer");
+
+      var logoUrl = queryConfig("merchant_logo");
+      if (logoUrl) {
+        var logo = document.getElementById("merchant_logo");
+        logo.src = logoUrl;
+        logo.hidden = false;
+        logo.onerror = function () {
+          logo.hidden = true;
+        };
+      }
+
+      setReceiptMeta("Reference", transaction.reference);
+      setReceiptMeta("Date", transaction.datetime);
+      setReceiptMeta("Cashier", queryConfig("pic_name"));
+      setReceiptMeta("Status", transaction.paid ? "Paid" : "Unpaid");
+      setReceiptMeta("Customer", transaction.customer_name || "Walk-in");
+      setReceiptMeta("Payment type", String(transaction.payment_type || "cash")
+        .replace(/_/g, " ").replace(/\b\w/g, function (letter) { return letter.toUpperCase(); }));
+
+      var tableBody = document.getElementById("tableSales");
+      (Array.isArray(transaction.data) ? transaction.data : []).forEach(function (product) {
+        var row = document.createElement("tr");
+        [product.product_name, product.product_qty, product.product_price, product.product_price_total]
+          .forEach(function (value, index) {
+            var cell = document.createElement("td");
+            cell.textContent = value === null || value === undefined ? "" : String(value);
+            if (index > 0) {
+              cell.className = "numeric";
+            }
+            row.appendChild(cell);
+          });
+        tableBody.appendChild(row);
+      });
+
+      setReceiptTotal("Total", transaction.total, true);
+      setReceiptTotal("Payment", transaction.payment, false);
+      setReceiptTotal("Change", transaction.change, false);
+    }
+
+    function showMissingReceipt() {
+      document.title = "Receipt not found · POS Lite";
+      document.getElementById("receipt").innerHTML =
+        '<div class="receipt-empty"><h1>Receipt not found</h1><p>This transaction may have been removed or the link is incorrect.</p><a class="button button-primary" href="./sales.html">Back to sales</a></div>';
+    }
+
+    if (new URL(window.location.href).searchParams.get("embed") === "1") {
+      document.body.classList.add("receipt-embedded");
+    }
+    initReceipt();
   </script>
-  
 </body>
+
+</html>

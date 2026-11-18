@@ -4,12 +4,7 @@
 <head>
   <title>POS Lite</title>
 
-  <link rel="icon" type="image/png" sizes="16x16"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-16.png">
-  <link rel="icon" type="image/png" sizes="32x32"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-32.png">
-  <link rel="icon" type="image/png" sizes="96x96"
-    href="https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Shop-96.png">
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/cK1Ss7vL/poslite-logo.png">
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,87 +12,124 @@
   <meta name="Description" content="POS Lite" />
   <meta name="author" content="POS Lite">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./css/pos.css">
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div class="container-fluid app-shell">
     <div class="row">
 
-      <div class="col-lg-12">
-        <ul class="nav nav-pills justify-content-end p-2" style="width:100%; background-color:aliceblue">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Sales</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./product.html">Product</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./config.html">Config</a>
-          </li>
-        </ul>
-      </div>
+      <header class="col-lg-12 app-topbar">
+        <a class="app-brand" href="./index.html" aria-label="POS Lite home">
+          <span class="app-brand-mark" aria-hidden="true"><i class="fa-solid fa-store"></i></span>
+          <span class="app-brand-name">POS LITE<small>Point of sale</small></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <ul class="nav nav-pills app-nav">
+            <li class="nav-item"><a class="nav-link active" href="./index.html" aria-current="page"><i
+                  class="fa-solid fa-cash-register" aria-hidden="true"></i> Checkout</a></li>
+            <li class="nav-item"><a class="nav-link" href="./sales.html"><i class="fa-solid fa-chart-line"
+                  aria-hidden="true"></i> Sales</a></li>
+            <li class="nav-item"><a class="nav-link" href="./product.html"><i class="fa-solid fa-box"
+                  aria-hidden="true"></i> Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="./config.html"><i class="fa-solid fa-gear"
+                  aria-hidden="true"></i> Config</a></li>
+          </ul>
+        </nav>
+      </header>
 
       <div class="col-lg-12 mt-3">
-        <h2 class="alert alert-primary text-center">
-          Sales
+        <h2 class="alert page-title">
+          New transaction
+          <small>Scan a barcode or find a product to get started.</small>
         </h2>
       </div>
 
       <div class="col-lg-4 mb-3">
+        <div class="checkout-label">Scan items</div>
         <div id="reader"></div>
+        <p class="scanner-note">Allow camera access to scan product barcodes.</p>
       </div>
 
       <div class="col-lg-8 mb-3">
         <div class="card" id="table_sales_card">
           <div class="card-body p-3">
             <div id="receipt_ref" style="display:none"></div>
+            <div class="checkout-label">Your cart</div>
             <div class="table-responsive">
               <table class="table table-sm table-striped mb-0" id="tableSalesData">
+                <colgroup>
+                  <col class="cart-product-column">
+                  <col class="cart-quantity-column">
+                  <col class="cart-price-column">
+                  <col class="cart-total-column">
+                  <col class="cart-operation-column">
+                </colgroup>
                 <thead>
                   <tr>
                     <th style="width:75%">Product</th>
                     <th style="text-align:end">Qty</th>
                     <th style="text-align:end">Price</th>
                     <th style="text-align:end">Total</th>
-                    <th id="table_sales_operation_th">Operation</th>
+                    <th id="table_sales_operation_th" title="Product quantity controls">Ops</th>
                   </tr>
                 </thead>
                 <tbody id="tableSales"></tbody>
-                <tfoot class="bg-info" id="totalPrice"></tfoot>
+                <tfoot class="checkout-total" id="totalPrice"></tfoot>
               </table>
+              <div class="checkout-details">
+                <div class="checkout-field">
+                  <label for="payment_type">Payment type</label>
+                  <select class="form-control" id="payment_type"></select>
+                </div>
+                <div class="checkout-field">
+                  <label for="customer_name">Customer name <span>(optional)</span></label>
+                  <input class="form-control" id="customer_name" type="text" maxlength="120"
+                    placeholder="Walk-in customer">
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="card mt-3 mb-3">
           <div class="card-body p-3">
-            <div>
+            <div class="checkout-label">Cart operations</div>
+            <div class="checkout-actions">
               <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top"
-                title="Search product from list" onclick="onSearchClicked()">
+                title="Search product from list" aria-label="Find products" onclick="onSearchClicked()">
                 <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Find products</span>
               </button>
               <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Clear"
-                onclick="clearSalesTable()">
+                aria-label="Clear cart" onclick="requestClearSalesTable()">
                 <i class="fas fa-redo"></i>
+                <span>Clear cart</span>
               </button>
-              <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Save transaction"
-                onclick="saveSalesTransaction()">
-              <i class="fas fa-save"></i>
+              <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                title="Save transaction" aria-label="Save transaction" onclick="requestSaveSalesTransaction()">
+                <i class="fas fa-save"></i>
+                <span id="save_transaction_label">Save sale</span>
               </button>
               <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
-                title="Print receipt" onclick="printTableSales()">
+                title="Print receipt" aria-label="Print receipt" onclick="printTableSales()">
                 <i class="fa fa-print"></i>
+                <span>Print</span>
               </button>
             </div>
 
             <div>
-              <div class="mt-2" id="seach_product_form" style="display: none;">
+              <div class="mt-2 checkout-search" id="seach_product_form" style="display: none;">
                 <div>
                   <form class="form-inline mb-2">
                     <div class="form-group">
-                      <label for=""></label>
-                      <input type="text" placeholder="Product Code" class="form-control" name="product_code_search" id="product_code_search"
+                      <label class="sr-only" for="product_code_search">Search by product code, name, or category</label>
+                      <input type="search" placeholder="Product code, name, or category" class="form-control"
+                        name="product_code_search" id="product_code_search"
                         onkeypress="handleEnterKeyPressOnSearchProductCode(event)" />
                     </div>
                     <div class="form-group ml-1" style="align-self: end;">
@@ -115,6 +147,7 @@
                         <th>ID</th>
                         <th>Code</th>
                         <th>Product</th>
+                        <th>Category</th>
                         <th style="text-align:end">Price</th>
                         <th style="text-align:center">Add</th>
                       </tr>
@@ -122,7 +155,7 @@
                     <tbody id="tableProduct"></tbody>
                   </table>
                 </div>
-  
+
               </div>
             </div>
           </div>
@@ -137,12 +170,18 @@
 
 
   <!-- Import JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
   <script src="js/localstoragedb.min.js"></script>
-  <script src="js/localstoragedbcustom.js"></script>
-  <script src="js/customalert.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/alerts.js"></script>
 
   <!-- Scanner -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -154,7 +193,7 @@
     }
 
     function onScannerFound(decodedText) {
-      lsDB = newSesionDB()
+      lsDB = newSessionDB()
       var products = lsDB.queryAll("products", {
         query: { product_code: decodedText }
       })
@@ -206,50 +245,84 @@
     }
 
     function onSearchProduct() {
-      document.getElementById('tableProduct').innerHTML = ``
-      var input = document.getElementById('product_code_search').value
-      if (input.length < 5) {
-        alertE("Please type atleast 5 character")
+      var resultsBody = document.getElementById("tableProduct")
+      resultsBody.textContent = ""
+      var input = document.getElementById("product_code_search").value.trim().toLowerCase()
+      if (input.length < 2) {
+        alertE("Enter at least 2 characters to search products")
         return
       }
 
-      lsDB = newSesionDB()
-      var searchQuery = function (row) {
-        if (row.product_code.toLowerCase().match(input.toLowerCase())) {
-          return true
-        } else {
-          return false
+      lsDB = newSessionDB()
+      var catalog = lsDB.queryAll("products")
+      if (!Array.isArray(catalog)) {
+        console.error("Product search expected the products table to return an array.")
+        alertE("Unable to load products. Please reload the page and try again.")
+        return
+      }
+
+      var searchProducts = []
+      for (var productIndex = 0; productIndex < catalog.length; productIndex++) {
+        var product = catalog[productIndex]
+        if (!product || typeof product !== "object") {
+          continue
+        }
+        var productCode = String(product.product_code || "").toLowerCase()
+        var productName = String(product.product_name || "").toLowerCase()
+        var productCategory = String(product.product_category || "Uncategorized").toLowerCase()
+        if (productCode.includes(input) || productName.includes(input) || productCategory.includes(input)) {
+          searchProducts.push(product)
         }
       }
-      var searchProduct = lsDB.queryAll("products", {
-        query: searchQuery
-      })
 
-      var tableProduct = ``
-      if (searchProduct.length != 0) {
-        searchProduct.forEach(function (value) {
-          var singleData = Object.values(value)
-          var singleDataRow = ``
-          singleData.forEach(function (va, i) {
-            if (i+1 == singleData.length) {
-              singleDataRow += `<td style="text-align:end">${va}</td>`
-            } else{
-              singleDataRow += `<td>${va}</td>`
-            }
-          })
-          tableProduct += "<tr>" + singleDataRow + `<td style="text-align:center"><button type="button" class="btn btn-sm btn-success" onclick="onAddToCart(${singleData[0]}, '${singleData[1]}', '${singleData[2]}', '${singleData[3]}', 1)">
-							<i class="fa fa-plus"></i>
-						</button></td></tr>`
-        })
+      if (searchProducts.length === 0) {
+        var emptyRow = document.createElement("tr")
+        var emptyCell = document.createElement("td")
+        emptyCell.colSpan = 6
+        emptyCell.className = "data-empty"
+        emptyCell.textContent = "No matching products found."
+        emptyRow.appendChild(emptyCell)
+        resultsBody.appendChild(emptyRow)
+        return
       }
 
-      document.getElementById('tableProduct').innerHTML = tableProduct
+      for (var resultIndex = 0; resultIndex < searchProducts.length; resultIndex++) {
+        let resultProduct = searchProducts[resultIndex]
+        var row = document.createElement("tr")
+        var values = [resultProduct.ID, resultProduct.product_code, resultProduct.product_name,
+          resultProduct.product_category || "Uncategorized"]
+        for (var valueIndex = 0; valueIndex < values.length; valueIndex++) {
+          var cell = document.createElement("td")
+          var value = values[valueIndex]
+          cell.textContent = String(value === null || value === undefined ? "" : value)
+          row.appendChild(cell)
+        }
+        var priceCell = document.createElement("td")
+        priceCell.className = "text-right"
+        priceCell.textContent = String(resultProduct.product_price)
+        row.appendChild(priceCell)
+        var actionCell = document.createElement("td")
+        actionCell.className = "text-center"
+        var addButton = document.createElement("button")
+        addButton.type = "button"
+        addButton.className = "btn btn-sm btn-success"
+        addButton.setAttribute("aria-label", "Add " + resultProduct.product_name + " to cart")
+        addButton.innerHTML = '<i class="fa fa-plus" aria-hidden="true"></i>'
+        addButton.addEventListener("click", function () {
+          onAddToCart(resultProduct.ID, resultProduct.product_code, resultProduct.product_name, resultProduct.product_price, 1)
+        })
+        actionCell.appendChild(addButton)
+        row.appendChild(actionCell)
+        resultsBody.appendChild(row)
+      }
     }
 
   </script>
 
   <!-- Sales/Transaction Table -->
   <script type="text/javascript">
+    var editingTransactionId = null
+
     function handleEnterKeyPressOnPaymentSave(e) {
       if (e.keyCode === 13) {
         e.preventDefault()
@@ -258,55 +331,96 @@
     }
 
     function onAddToCart(id, productCode, productName, productPrice, qtyValue) {
-      var pid = "pid_" + id
-      var pidName = "pid_name_" + productCode
-      var pidPrice = "pid_price_" + productCode
-      var pidQty = "pid_qty_" + id
-      var pidSubtotalPrice = "pid_subtotal_" + id
-      var tr = "<tr id=" + pid + ">"
-      var tdProductName = `<td id="${pidName}">${productName}</td>`
-      var tdProductPrice = `<td id="${pidPrice}" style='text-align:end'>${productPrice}</td>`
-      var tdOP = `<td id="table_sales_operation_button_${id}" style="text-align:center">
-							<button type="button" class="btn btn-sm btn-success" onclick="onAddToCart(${id}, '${productCode}', '${productName}', '${productPrice}', 1)">
-								<i class="fa fa-plus"></i>
-							</button>
-							<button type="button" class="btn btn-sm btn-danger" onclick="onAddToCart(${id}, '${productCode}', '${productName}', '${productPrice}', -1)">
-								<i class="fa fa-minus"></i>
-						</button>
-						</td>`
-
-      if (document.getElementById(pid) == null) {
-        var tdQty = `<td id="${pidQty}"  style='text-align:end'>1</td>`
-        var tdSubTotalPrice = `<td id="${pidSubtotalPrice}" style='text-align:end'>${productPrice}</td>`
-        document.getElementById("tableSales").innerHTML += tr + tdProductName + tdQty + tdProductPrice + tdSubTotalPrice + tdOP + "</tr>"
-        calculateTotal()
-      } else {
-        var qty = parseInt(document.getElementById(pidQty).innerHTML) || 0
-        qty += qtyValue
-        if (qty == 0) {
-          document.getElementById(pid).remove()
-          calculateTotal()
-          return
-        }
-
-        productPriceInt = parseInt(productPrice) || 0
-        var subTotalPrice = qty * productPriceInt
-
-        var tdQty = `<td id="${pidQty}" style='text-align:end'>${qty}</td>`
-        var tdSubTotalPrice = `<td id="${pidSubtotalPrice}" style='text-align:end'>${subTotalPrice}</td>`
-        document.getElementById(pid).innerHTML = tr + tdProductName + tdQty + tdProductPrice + tdSubTotalPrice + tdOP + "</tr>"
-        calculateTotal()
+      var rowId = "pid_" + id
+      var price = Number(productPrice)
+      var quantityChange = Number(qtyValue)
+      if (!Number.isFinite(price) || price < 0 || !Number.isFinite(quantityChange)) {
+        alertE("This product has an invalid price or quantity")
+        return
       }
+
+      var row = document.getElementById(rowId)
+      var quantity = row ? Number(document.getElementById("pid_qty_" + id).textContent) + quantityChange : quantityChange
+      if (!Number.isSafeInteger(quantity) || !Number.isFinite(quantity * price)) {
+        alertE("This product quantity or subtotal is too large")
+        return
+      }
+      if (quantity <= 0) {
+        if (row) {
+          row.remove()
+        }
+        calculateTotal()
+        return
+      }
+
+      if (!row) {
+        row = document.createElement("tr")
+        row.id = rowId
+        document.getElementById("tableSales").appendChild(row)
+      }
+      row.textContent = ""
+
+      var nameCell = document.createElement("td")
+      nameCell.className = "cart-product-cell"
+      nameCell.id = "pid_name_" + productCode
+      nameCell.textContent = productName
+      nameCell.title = productName
+      var quantityCell = document.createElement("td")
+      quantityCell.id = "pid_qty_" + id
+      quantityCell.className = "text-right"
+      quantityCell.textContent = String(quantity)
+      var priceCell = document.createElement("td")
+      priceCell.id = "pid_price_" + productCode
+      priceCell.className = "text-right"
+      priceCell.textContent = String(price)
+      var subtotalCell = document.createElement("td")
+      subtotalCell.id = "pid_subtotal_" + id
+      subtotalCell.className = "text-right"
+      subtotalCell.textContent = String(quantity * price)
+      var actionsCell = document.createElement("td")
+      actionsCell.className = "cart-operation-cell"
+      var actionButtons = document.createElement("div")
+      actionButtons.className = "cart-operation-buttons"
+
+      var addButton = document.createElement("button")
+      addButton.type = "button"
+      addButton.className = "btn btn-sm btn-success"
+      addButton.setAttribute("aria-label", "Add one " + productName)
+      addButton.innerHTML = '<i class="fa fa-plus" aria-hidden="true"></i>'
+      addButton.addEventListener("click", function () {
+        onAddToCart(id, productCode, productName, price, 1)
+      })
+      var removeButton = document.createElement("button")
+      removeButton.type = "button"
+      removeButton.className = "btn btn-sm btn-danger"
+      removeButton.setAttribute("aria-label", "Remove one " + productName)
+      removeButton.innerHTML = '<i class="fa fa-minus" aria-hidden="true"></i>'
+      removeButton.addEventListener("click", function () {
+        onAddToCart(id, productCode, productName, price, -1)
+      })
+      actionButtons.appendChild(addButton)
+      actionButtons.appendChild(removeButton)
+      actionsCell.appendChild(actionButtons)
+      row.appendChild(nameCell)
+      row.appendChild(quantityCell)
+      row.appendChild(priceCell)
+      row.appendChild(subtotalCell)
+      row.appendChild(actionsCell)
+      calculateTotal()
     }
 
     function calculateTotal() {
       var subTotal = Array.from(document.querySelectorAll("[id^='pid_subtotal_']"))
       if (subTotal.length != 0) {
+        var paidSelection = document.querySelector('input[name="transactionPaid"]:checked')
+        var paymentBefore = editingTransactionId === null ? null :
+          document.getElementById("totalPayment") && document.getElementById("totalPayment").textContent
         var total = 0
         subTotal.forEach(function (value) {
-          var subTotalInt = parseInt(value.innerHTML) || 0
-          total += subTotalInt
+          var subTotalValue = Number(value.textContent) || 0
+          total += subTotalValue
         })
+        total = Math.round(total * 100) / 100
         document.getElementById("totalPrice").innerHTML = `<tr>
 									<th>Total</th>
 									<th colspan="3" id="totalPriceTH" style='text-align:end'>${total}</th>
@@ -314,18 +428,41 @@
 								</tr>
 								<tr>
 									<th>Payment</th>
-									<th <th colspan="3" id="totalPayment" style='text-align:end'>${total}</th>
+									<th colspan="3" id="totalPayment" style='text-align:end'>${total}</th>
 									<th id="table_sales_operation_tfoot_2" style="text-align:center">
-										<button class="btn btn-sm btn-warning" onclick="onTotalPaymentEdit()">
+										<button class="btn btn-sm btn-warning cart-payment-edit" aria-label="Edit payment amount" onclick="onTotalPaymentEdit()">
 											<i class="fa fa-edit"></i>
 										</button>
 									</th>
 								</tr>
 								<tr>
 									<th>Change</th>
-									<th <th colspan="3" id="totalChange" style='text-align:end'>0</th>
+									<th colspan="3" id="totalChange" style='text-align:end'>0</th>
 									<th id="table_sales_operation_tfoot_4"></th>
+								</tr>
+								<tr>
+									<th>Paid</th>
+									<th colspan="3" style="text-align:end">
+										<label class="mr-3"><input type="radio" name="transactionPaid" value="true" onchange="onPaidStatusChange()"> Paid</label>
+										<label><input type="radio" name="transactionPaid" value="false" checked onchange="onPaidStatusChange()"> Unpaid</label>
+									</th>
+									<th></th>
 								</tr>`
+        if (paidSelection) {
+          var paidRadio = document.querySelector('input[name="transactionPaid"][value="' + paidSelection.value + '"]')
+          if (paidRadio) {
+            paidRadio.checked = true
+          }
+        }
+        if (paymentBefore !== null && paymentBefore !== "" && Number.isFinite(Number(paymentBefore))) {
+          document.getElementById("totalPayment").textContent = paidSelection && paidSelection.value === "true"
+            ? String(total)
+            : paymentBefore
+        } else {
+          document.getElementById("totalPayment").textContent =
+            paidSelection && paidSelection.value === "true" ? String(total) : "0"
+        }
+        calculatePayment()
       } else {
         document.getElementById("totalPrice").innerHTML = ""
       }
@@ -333,120 +470,326 @@
 
     function onTotalPaymentEdit() {
       var paymentBefore = document.getElementById("totalPayment").innerHTML
-      document.getElementById("totalPayment").innerHTML = `<input id="totalPaymentEdit" type="number" value=${paymentBefore} onkeypress="handleEnterKeyPressOnPaymentSave(event)"></input>`
+      document.getElementById("totalPayment").innerHTML = `<input id="totalPaymentEdit" type="number" min="0" step="any" value="${paymentBefore}" onkeypress="handleEnterKeyPressOnPaymentSave(event)"></input>`
       document.getElementById("table_sales_operation_tfoot_2").innerHTML = `
-			<button class="btn btn-sm btn-primary" onclick="onTotalPaymentSave()">
+			<button class="btn btn-sm btn-primary cart-payment-edit" aria-label="Save payment amount" onclick="onTotalPaymentSave()">
 				<i class="fas fa-save"></i>
+			</button>`
+    }
+
+    function restorePaymentEditButton() {
+      document.getElementById("table_sales_operation_tfoot_2").innerHTML = `
+			<button class="btn btn-sm btn-warning cart-payment-edit" aria-label="Edit payment amount" onclick="onTotalPaymentEdit()">
+				<i class="fa fa-edit"></i>
 			</button>`
     }
 
     function onTotalPaymentSave() {
       var paymentAfter = document.getElementById("totalPaymentEdit").value
-      document.getElementById("totalPayment").innerHTML = `<th id="totalPayment">${paymentAfter}</th>`
-      document.getElementById("table_sales_operation_tfoot_2").innerHTML = `
-			<button class="btn btn-sm btn-warning" onclick="onTotalPaymentEdit()">
-				<i class="fa fa-edit"></i>
-			</button>`
+      var paymentValue = Number(paymentAfter)
+      if (!Number.isFinite(paymentValue) || paymentValue < 0) {
+        alertE("Enter a valid payment amount")
+        return
+      }
+      document.getElementById("totalPayment").textContent = String(paymentValue)
+      restorePaymentEditButton()
       calculatePayment()
     }
 
     function calculatePayment() {
-      var totalPrice = parseInt(document.getElementById("totalPriceTH").innerHTML) || 0
-      var totalPayment = parseInt(document.getElementById("totalPayment").innerHTML) || 0
-      document.getElementById("totalPayment").innerHTML = totalPayment
-      document.getElementById("totalChange").innerHTML = totalPayment - totalPrice
+      var totalPrice = Number(document.getElementById("totalPriceTH").textContent) || 0
+      var totalPayment = Number(document.getElementById("totalPayment").textContent) || 0
+      document.getElementById("totalPayment").textContent = String(totalPayment)
+      document.getElementById("totalChange").textContent =
+        String(Math.round((totalPayment - totalPrice) * 100) / 100)
+    }
+
+    function onPaidStatusChange() {
+      var selectedStatus = document.querySelector('input[name="transactionPaid"]:checked')
+      if (!document.getElementById("totalPriceTH") || !selectedStatus) {
+        return
+      }
+      var isPaid = selectedStatus.value === "true"
+      document.getElementById("totalPayment").textContent = isPaid
+        ? document.getElementById("totalPriceTH").textContent
+        : "0"
+      restorePaymentEditButton()
+      calculatePayment()
     }
 
     function clearSalesTable() {
       document.getElementById("receipt_ref").innerHTML = ""
       document.getElementById("tableSales").innerHTML = ""
       document.getElementById("totalPrice").innerHTML = ""
+      editingTransactionId = null
+      if (new URLSearchParams(window.location.search).has("edit")) {
+        window.history.replaceState(null, "", window.location.pathname)
+      }
+      document.querySelector(".page-title").firstChild.nodeValue = "New transaction"
+      document.getElementById("save_transaction_label").textContent = "Save sale"
+      var unpaidRadio = document.querySelector('input[name="transactionPaid"][value="false"]')
+      if (unpaidRadio) {
+        unpaidRadio.checked = true
+      }
+      document.getElementById("customer_name").value = ""
+      setPaymentType("cash")
+    }
+
+    function requestClearSalesTable() {
+      var cartHasItems = document.getElementById("tableSales").children.length > 0
+      if (!cartHasItems && editingTransactionId === null) {
+        return
+      }
+
+      var message = editingTransactionId === null
+        ? "Clear all products from the current cart?"
+        : "Discard your checkout changes and stop editing this saved transaction?"
+      confirmAction(message, clearSalesTable, "Clear cart")
+    }
+
+    function requestSaveSalesTransaction(afterSave) {
+      if (document.getElementById("tableSales").children.length === 0) {
+        saveSalesTransaction()
+        return
+      }
+
+      var total = document.getElementById("totalPriceTH").textContent
+      var payment = document.getElementById("totalPayment").textContent
+      var paidRadio = document.querySelector('input[name="transactionPaid"]:checked')
+      var status = paidRadio && paidRadio.value === "true" ? "Paid" : "Unpaid"
+      var action = editingTransactionId === null ? "Save this sale" : "Save changes to this sale"
+      var reference = document.getElementById("receipt_ref").textContent
+      var message = action + (reference ? " " + reference : "") +
+        "? Total: " + total + ", payment: " + payment + ", status: " + status + "."
+
+      confirmAction(message, function () {
+        if (saveSalesTransaction()) {
+          var savedReference = document.getElementById("receipt_ref").textContent
+          clearSalesTable()
+          if (typeof afterSave === "function") {
+            afterSave(savedReference)
+          }
+        }
+      }, "Confirm and save")
     }
 
     function saveSalesTransaction() {
-      var tableCard = document.getElementById("table_sales_card").innerHTML
       var tableSales = document.getElementById("tableSales").innerHTML
       if (tableSales == "") {
         alertE("Please add atleast 1 product to save this sales transaction")
         return
       }
 
+      lsDB = newSessionDB()
       var pBuyQty = Array.from(document.querySelectorAll("[id^='pid_qty_']"))
       var pBuyPrice = Array.from(document.querySelectorAll("[id^='pid_price_']"))
       var pBuyPriceTotal = Array.from(document.querySelectorAll("[id^='pid_subtotal_']"))
       var pBuyName = Array.from(document.querySelectorAll("[id^='pid_name_']"))
-      var pTotal = document.getElementById("totalPriceTH").innerHTML
-      var pPayment = document.getElementById("totalPayment").innerHTML
-      var pChange = document.getElementById("totalChange").innerHTML
+      var pTotal = document.getElementById("totalPriceTH").textContent
+      var pPayment = document.getElementById("totalPayment").textContent
+      var pChange = document.getElementById("totalChange").textContent
+      var paidRadio = document.querySelector('input[name="transactionPaid"]:checked')
+      var customerName = document.getElementById("customer_name").value.trim()
+      var paymentType = document.getElementById("payment_type").value
 
-      trxData = []
+      var trxData = []
       pBuyName.forEach(function (value, i) {
-        let data = { 
+        let data = {
           product_code: value.id.replace("pid_name_", ""),
-          product_name: value.innerHTML,
-          product_price: pBuyPrice[i].innerHTML,
-          product_qty: pBuyQty[i].innerHTML,
-          product_price_total: pBuyPriceTotal[i].innerHTML
+          product_name: value.textContent,
+          product_price: pBuyPrice[i].textContent,
+          product_qty: pBuyQty[i].textContent,
+          product_price_total: pBuyPriceTotal[i].textContent
         }
 
         trxData.push(data)
       })
 
-      var newDate = new Date();
-      var dateTime = newDate.toLocaleString('sv-SE') // Sweden format seems like common format. i want something like yyyy-mm-dd hh:ii:ss
-      var newQuery = function (row) {
-        if (row['datetime'].match(dateTime.substring(0, 10))) {
-          return true
-        } else {
-          return false
-        }
-      }
+      var existingTransaction = editingTransactionId === null ? null :
+        lsDB.queryAll("sales", { query: { ID: editingTransactionId } })[0]
+      var newDate = new Date()
+      var dateTime = existingTransaction ? existingTransaction.datetime : newDate.toLocaleString("sv-SE")
       
       var trxRef = document.getElementById("receipt_ref").innerHTML
-        if (trxRef == "") {
-          var listSalesTrx = lsDB.queryAll("sales", {
-          query: newQuery
+      if (!trxRef) {
+        var referencePrefix = `ST/${queryConfig("merchant_code")}/${queryConfig("pic_code")}`
+        var existingReferences = lsDB.queryAll("sales").filter(function (transaction) {
+          return String(transaction.reference || "").indexOf(referencePrefix + "/") === 0
         })
-        trxRef = `ST/${queryConfig("merchant_code")}/${queryConfig("pic_code")}/${String(listSalesTrx.length + 1).padStart(4, "0")}`
+        var nextSequence = existingReferences.reduce(function (maximum, transaction) {
+          var reference = String(transaction.reference || "")
+          var sequence = Number(reference.substring(referencePrefix.length + 1))
+          return Number.isSafeInteger(sequence) && sequence > maximum ? sequence : maximum
+        }, 0) + 1
+        trxRef = `${referencePrefix}/${String(nextSequence).padStart(4, "0")}`
+        while (existingReferences.some(function (transaction) {
+          return transaction.reference === trxRef
+        })) {
+          nextSequence += 1
+          trxRef = `${referencePrefix}/${String(nextSequence).padStart(4, "0")}`
+        }
       }
 
       var trx = {
         reference: trxRef,
-        timestamp: newDate / 1000 | 0, // only for backup, when someone want to convert to other format
+        timestamp: existingTransaction ? existingTransaction.timestamp : newDate / 1000 | 0,
         datetime: dateTime,
         data: trxData,
         total: pTotal,
         payment: pPayment,
-        change: pChange
+        change: pChange,
+        paid: paidRadio ? paidRadio.value === "true" : false,
+        customer_name: customerName,
+        payment_type: paymentType || "cash"
       }
 
       document.getElementById("receipt_ref").innerHTML = trxRef
 
-      lsDB.insertOrUpdate("sales", {reference: trxRef}, trx)
+      if (editingTransactionId !== null) {
+        var updatedCount = lsDB.update("sales", { ID: editingTransactionId }, function () {
+          return trx
+        })
+        if (updatedCount === 0) {
+          alertE("This transaction no longer exists. Reload the page before saving.")
+          return false
+        }
+      } else {
+        lsDB.insert("sales", trx)
+      }
       lsDB.commit()
+      return true
     }
 
+    function loadTransactionForEditing() {
+      var requestedId = new URLSearchParams(window.location.search).get("edit")
+      if (!requestedId) {
+        return
+      }
+
+      var transactionId = Number(requestedId)
+      if (!Number.isSafeInteger(transactionId) || transactionId <= 0) {
+        alertE("The requested transaction ID is invalid.")
+        return
+      }
+
+      lsDB = newSessionDB()
+      var records = lsDB.queryAll("sales", { query: { ID: transactionId } })
+      if (records.length !== 1) {
+        alertE("This transaction could not be found.")
+        return
+      }
+
+      var transaction = records[0]
+      if (!Array.isArray(transaction.data) || transaction.data.length === 0) {
+        alertE("This transaction has no product lines to edit.")
+        return
+      }
+
+      editingTransactionId = transactionId
+      var products = lsDB.queryAll("products")
+      for (var index = 0; index < transaction.data.length; index += 1) {
+        var item = transaction.data[index]
+        var name = String(item.product_name || "").trim()
+        var code = String(item.product_code || "").trim()
+        var quantity = Number(item.product_qty)
+        var price = Number(item.product_price)
+        if (!name || !Number.isSafeInteger(quantity) || quantity <= 0 ||
+          !Number.isFinite(price) || price < 0 || !Number.isFinite(quantity * price)) {
+          alertE("This transaction contains a product line that cannot be edited.")
+          clearSalesTable()
+          return
+        }
+
+        var matchingProducts = products.filter(function (product) {
+          return String(product.product_code || "") === code
+        })
+        var cartId = matchingProducts.length === 1 ? matchingProducts[0].ID : "edit_" + index
+        onAddToCart(cartId, code || name, name, price, quantity)
+      }
+
+      document.getElementById("receipt_ref").textContent = transaction.reference || ""
+      document.getElementById("customer_name").value = transaction.customer_name || ""
+      setPaymentType(transaction.payment_type || "cash")
+      document.getElementById("totalPayment").textContent = transaction.paid
+        ? String(Number(transaction.total) || 0)
+        : "0"
+      calculatePayment()
+      var paidRadio = document.querySelector(
+        'input[name="transactionPaid"][value="' + (transaction.paid ? "true" : "false") + '"]'
+      )
+      if (paidRadio) {
+        paidRadio.checked = true
+      }
+
+      document.querySelector(".page-title").firstChild.nodeValue = "Edit transaction"
+      document.getElementById("save_transaction_label").textContent = "Save changes"
+      document.querySelector("#table_sales_card").scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+
+    function getConfiguredPaymentTypes() {
+      var configured = String(queryConfig("payment_types") || "cash,qris,bank_transfer")
+        .split(",")
+        .map(function (type) { return type.trim() })
+        .filter(function (type, index, types) {
+          return type && types.findIndex(function (candidate) {
+            return candidate.toLowerCase() === type.toLowerCase()
+          }) === index
+        })
+      return configured.length ? configured : ["cash", "qris", "bank_transfer"]
+    }
+
+    function setPaymentType(selectedType) {
+      var select = document.getElementById("payment_type")
+      if (!select) {
+        return
+      }
+      var types = getConfiguredPaymentTypes()
+      if (selectedType && !types.some(function (type) {
+        return type.toLowerCase() === selectedType.toLowerCase()
+      })) {
+        types.push(selectedType)
+      }
+      select.textContent = ""
+      types.forEach(function (type) {
+        var option = document.createElement("option")
+        option.value = type
+        option.textContent = type.replace(/_/g, " ").replace(/\b\w/g, function (letter) {
+          return letter.toUpperCase()
+        })
+        select.appendChild(option)
+      })
+      select.value = types.find(function (type) {
+        return type.toLowerCase() === String(selectedType || "cash").toLowerCase()
+      }) || types[0]
+    }
+
+    setPaymentType("cash")
+    loadTransactionForEditing()
   </script>
 
   <!-- Table Printer -->
   <script type="text/javascript">
     function printTableSales() {
-      saveSalesTransaction() // save trx 1st then print it
-      
+      requestSaveSalesTransaction(openSavedReceiptForPrinting)
+    }
+
+    function openSavedReceiptForPrinting(trxRef) {
       var uri = window.location.pathname.replace("index.html", "receipt.html")
       if (!(uri.includes("receipt.html"))) {
         uri += "receipt.html"
       }
 
-      var trxRef = document.getElementById("receipt_ref").innerHTML
-      var printWindow = window.open(uri + '?ref=' + trxRef, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-      printWindow.addEventListener('load', function(){
-          printWindow.print();
-          setTimeout(function(){
-                printWindow.close();
-            }, 500);
+      var printWindow = window.open(uri + '?ref=' + encodeURIComponent(trxRef), 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+      if (!printWindow) {
+        alertE("Allow pop-ups to print this receipt")
+        return
+      }
+      printWindow.addEventListener('load', function () {
+        printWindow.print();
+        setTimeout(function () {
+          printWindow.close();
+        }, 500);
       }, true);
-      html5QrcodeScanner.render(onScanSuccess)
     }
 
   </script>

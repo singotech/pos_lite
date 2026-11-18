@@ -1,0 +1,748 @@
+:root {
+  color-scheme: light;
+  --ink: #171717;
+  --paper: #fffdf6;
+  --canvas: #f5f0e5;
+  --muted: #6b675f;
+  --yellow: #ffd84d;
+  --blue: #a9d8ff;
+  --pink: #ffb6c8;
+  --green: #b8efc5;
+  --line: 2px solid var(--ink);
+  --shadow: 5px 5px 0 var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--canvas);
+  background-image: radial-gradient(#d7cebd 0.8px, transparent 0.8px);
+  background-size: 15px 15px;
+  color: var(--ink);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a,
+button,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell.container-fluid {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 48px;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.app-brand:hover,
+.app-brand:focus {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.app-brand-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: var(--line);
+  background: var(--yellow);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 19px;
+}
+
+.app-brand-name {
+  font-size: 19px;
+}
+
+.app-brand-name small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.app-nav.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+}
+
+.app-nav .nav-link {
+  display: block;
+  padding: 10px 13px;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.app-nav .nav-link:hover,
+.app-nav .nav-link:focus-visible {
+  border-color: var(--ink);
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+}
+
+.app-nav .nav-link.active,
+.app-nav .nav-link[aria-current="page"] {
+  border: var(--line);
+  background: var(--yellow);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+}
+
+.page-title.alert {
+  margin: 0 0 24px;
+  padding: 20px 24px;
+  border: var(--line);
+  border-radius: 9px;
+  background: var(--yellow);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-size: clamp(30px, 5vw, 45px);
+  font-weight: 950;
+  letter-spacing: -0.06em;
+  text-align: left !important;
+}
+
+.page-title small {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.app-shell .row {
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.app-shell [class*="col-"] {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.app-shell .card,
+.app-shell .modal-content {
+  overflow: hidden;
+  border: var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.app-shell .card-body {
+  padding: 20px !important;
+}
+
+.app-shell .card .card {
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.app-shell .btn {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+
+.app-shell .btn:hover,
+.app-shell .btn:focus {
+  border-color: var(--ink);
+  color: var(--ink);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.app-shell .btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.app-shell .btn-info,
+.app-shell .btn-primary,
+.app-shell .btn-success {
+  border-color: var(--ink);
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.app-shell .btn-secondary {
+  border-color: var(--ink);
+  background: var(--blue);
+  color: var(--ink);
+}
+
+.app-shell .btn-warning {
+  border-color: var(--ink);
+  background: var(--green);
+  color: var(--ink);
+}
+
+.app-shell .btn-danger {
+  border-color: var(--ink);
+  background: var(--pink);
+  color: var(--ink);
+}
+
+.button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.button:hover,
+.button:focus {
+  color: var(--ink);
+  text-decoration: none;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.button-primary {
+  background: var(--yellow);
+}
+
+.page-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+
+.page-section-heading h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.page-section-heading p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.app-shell .data-empty {
+  padding: 28px 14px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.app-shell .danger-panel {
+  border-color: var(--ink);
+  background: #fff3f1;
+}
+
+.app-shell .danger-panel h3 {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.app-shell .danger-panel p {
+  margin: 6px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.app-shell .form-control,
+.app-shell .custom-select,
+.app-shell input[type="file"] {
+  min-height: 40px;
+  border: var(--line);
+  border-radius: 6px;
+  background-color: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  box-shadow: none;
+}
+
+.app-shell .form-control:focus,
+.app-shell .custom-select:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgb(52 117 255 / 22%);
+}
+
+.app-shell .input-group > .form-control,
+.app-shell .input-group > .custom-select,
+.app-shell .input-group-append > .btn {
+  height: 40px;
+}
+
+.app-shell .table-responsive {
+  border-radius: 6px;
+}
+
+.app-shell table {
+  color: var(--ink);
+}
+
+.app-shell .table thead th {
+  border-top: 0;
+  border-bottom: var(--line);
+  background: #f3eddf;
+  color: #4a463e;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.app-shell .table td,
+.app-shell .table th {
+  padding: 12px 14px;
+  border-color: #e9e3d6;
+  vertical-align: middle;
+}
+
+.app-shell .config-value-cell {
+  white-space: pre-line;
+}
+
+.app-shell #new_config_value,
+.app-shell .config-value-cell textarea {
+  min-height: 64px;
+  resize: vertical;
+}
+
+.app-shell #tableSalesData {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.app-shell #tableSalesData .cart-product-column {
+  width: 39%;
+}
+
+.app-shell #tableSalesData .cart-quantity-column {
+  width: 11%;
+}
+
+.app-shell #tableSalesData .cart-price-column,
+.app-shell #tableSalesData .cart-total-column {
+  width: 16%;
+}
+
+.app-shell #tableSalesData .cart-operation-column {
+  width: 18%;
+}
+
+.app-shell #tableSalesData th,
+.app-shell #tableSalesData td {
+  padding: 6px 5px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.app-shell #tableSalesData .cart-product-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-shell #tableSalesData .cart-operation-cell {
+  text-align: center;
+}
+
+.cart-operation-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.app-shell .cart-operation-buttons .btn {
+  width: 27px;
+  min-width: 27px;
+  min-height: 27px;
+  padding: 2px;
+  line-height: 1;
+}
+
+.app-shell .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #fffaf0;
+}
+
+.app-shell .table tbody tr:hover {
+  background-color: #fff4cf;
+}
+
+.app-shell .table tfoot,
+.app-shell .table .bg-info {
+  background: var(--blue) !important;
+}
+
+.app-shell [contenteditable="true"] {
+  min-width: 80px;
+  background: white;
+  outline: 2px dashed #807869;
+  outline-offset: -3px;
+}
+
+.app-shell .modal-header,
+.app-shell .modal-footer {
+  border-color: #e9e3d6;
+}
+
+.app-shell .modal-body {
+  font-size: 14px;
+}
+
+.app-shell #customAlert .modal-content {
+  box-shadow: var(--shadow);
+}
+
+#customAlert {
+  position: relative;
+  z-index: 1100;
+}
+
+.custom-alert-backdrop {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(23 23 23 / 58%);
+}
+
+.custom-alert-dialog {
+  width: min(440px, 100%);
+  padding: 24px;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.custom-alert-dialog h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.custom-alert-dialog p {
+  margin: 12px 0 20px;
+  overflow-wrap: anywhere;
+}
+
+.custom-alert-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.custom-alert-close {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: var(--line);
+  border-radius: 6px;
+  background: var(--yellow);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.custom-alert-cancel {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.custom-alert-close:focus-visible {
+  outline: 3px solid #3475ff;
+  outline-offset: 3px;
+}
+
+.app-shell #reader {
+  overflow: hidden;
+  border: var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.app-shell #reader__scan_region {
+  min-height: 240px;
+}
+
+.app-shell #reader button {
+  min-height: 38px !important;
+  padding: 8px 13px !important;
+  border: var(--line) !important;
+  border-radius: 6px !important;
+  background: var(--yellow) !important;
+  box-shadow: 2px 2px 0 var(--ink) !important;
+  color: var(--ink) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.app-shell #reader a {
+  color: var(--ink);
+  font-weight: 750;
+}
+
+.app-shell .scanner-note {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.app-shell .checkout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.app-shell .checkout-actions .btn {
+  flex: 1 1 130px;
+}
+
+.app-shell .checkout-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 12px;
+  margin-bottom: 12px;
+}
+
+.app-shell .checkout-field label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.app-shell .checkout-field label span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.app-shell .checkout-field .form-control {
+  min-width: 0;
+  min-height: 34px;
+  height: 34px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.app-shell .cart-payment-edit {
+  width: 27px;
+  min-width: 27px;
+  min-height: 27px;
+  padding: 2px;
+  line-height: 1;
+}
+
+.app-shell .checkout-label {
+  margin-bottom: 13px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.app-shell .checkout-total {
+  background: var(--blue) !important;
+}
+
+.app-shell .checkout-search {
+  padding: 16px;
+  border: 1px dashed #aaa18e;
+  border-radius: 8px;
+  background: #fffaf0;
+}
+
+.app-shell .footer-note {
+  margin: 20px 2px 0;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: right;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 760px) {
+  .app-shell.container-fluid {
+    width: calc(100% - 24px);
+    padding-top: 18px;
+  }
+
+  .app-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 26px;
+  }
+
+  .app-nav.nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1px;
+  }
+
+  .app-nav .nav-link {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .app-shell .card-body {
+    padding: 15px !important;
+  }
+
+  .page-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-shell .row {
+    margin-right: -6px;
+    margin-left: -6px;
+  }
+
+  .app-shell [class*="col-"] {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .page-title.alert {
+    padding: 17px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+}
+
+@media (max-width: 460px) {
+  .app-shell .card-body {
+    padding: 12px !important;
+  }
+
+  .app-shell .table td,
+  .app-shell .table th {
+    padding: 10px 9px;
+    font-size: 11px;
+  }
+
+  .app-shell #tableSalesData th,
+  .app-shell #tableSalesData td {
+    padding: 5px 3px;
+    font-size: 10px;
+  }
+
+  .app-shell #tableSalesData .cart-product-column {
+    width: 34%;
+  }
+
+  .app-shell #tableSalesData .cart-quantity-column {
+    width: 11%;
+  }
+
+  .app-shell #tableSalesData .cart-price-column {
+    width: 16%;
+  }
+
+  .app-shell #tableSalesData .cart-total-column {
+    width: 18%;
+  }
+
+  .app-shell #tableSalesData .cart-operation-column {
+    width: 21%;
+  }
+
+  .app-shell .cart-operation-buttons {
+    gap: 2px;
+  }
+
+  .app-shell .cart-operation-buttons .btn {
+    width: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 1px;
+    font-size: 10px;
+  }
+
+  .app-shell .checkout-details {
+    gap: 5px 8px;
+  }
+}
