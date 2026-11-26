@@ -4,14 +4,14 @@ A lightweight point-of-sale app built with plain HTML, CSS, and JavaScript. It r
 
 ## Features
 
-- Scan product barcodes or search products manually at checkout.
-- Review a compact checkout cart, confirm before clearing or saving, record paid or unpaid status, take payment, and save or print receipts.
+- Scan product barcodes or search products manually on the Transaction page.
+- Review a compact transaction cart, confirm before clearing or saving, record paid or unpaid status, take payment, and save or print receipts.
 - Add, edit, search, import, and export products with categories. Older catalogs are migrated to an `Uncategorized` default.
-- Configure receipt and merchant details, configure checkout payment methods with the `payment_types` comma-separated setting, import/export settings, and reset local data.
-- Review, reopen sales in checkout for editing and re-saving, search, and export transactions; receipts display in-page.
+- Configure receipt and merchant details, configure transaction payment methods with the `payment_types` comma-separated setting, import/export settings, and reset local data.
+- Review, reopen sales on the Transaction page for editing and re-saving, search, and export transactions; receipts display in-page.
 
 New transactions default to Unpaid. When an existing local database is first opened after this update, older transactions are marked paid when their recorded payment covers the total.
-Checkout defaults to Cash and provides `cash,qris,bank_transfer` as payment methods. Set Config key `payment_types` to a comma-separated list to customize them.
+Transactions default to Cash and provide `cash,qris,bank_transfer` as payment methods. Set Config key `payment_types` to a comma-separated list to customize them.
 
 ## Run locally
 

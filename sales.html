@@ -888,7 +888,7 @@
       </a>
       <nav aria-label="Main navigation">
         <ul class="nav-links">
-          <li><a href="./index.html"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Checkout</a></li>
+          <li><a href="./index.html"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Transaction</a></li>
           <li><a href="./sales.html" aria-current="page"><i class="fa-solid fa-chart-line" aria-hidden="true"></i>
               Sales</a></li>
           <li><a href="./product.html"><i class="fa-solid fa-box" aria-hidden="true"></i> Products</a></li>
@@ -902,7 +902,7 @@
         <div>
           <p class="eyebrow">Your business at a glance</p>
           <h1 id="page-title">Sales report<span aria-hidden="true">.</span></h1>
-          <p class="page-intro">Track every checkout and keep your daily numbers in view.</p>
+          <p class="page-intro">Track every transaction and keep your daily numbers in view.</p>
         </div>
         <div class="heading-actions">
           <button class="button button-primary" type="button" onclick="onDownloadTransaction()">
@@ -921,7 +921,7 @@
         <article class="summary-card">
           <div class="summary-label"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Today's sales</div>
           <div class="summary-value" id="today_transactions">0</div>
-          <div class="summary-note">Completed checkouts today</div>
+          <div class="summary-note">Transactions completed today</div>
         </article>
         <article class="summary-card">
           <div class="summary-label"><i class="fa-solid fa-coins" aria-hidden="true"></i> Today's revenue</div>
@@ -936,7 +936,7 @@
             <span class="section-icon" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
             <div>
               <h2 id="transactions-title">Transaction history</h2>
-              <p class="section-subtitle">Search, reopen a sale at checkout, view receipts, or remove a transaction.</p>
+              <p class="section-subtitle">Search, reopen a sale in Transactions, view receipts, or remove a transaction.</p>
             </div>
           </div>
           <form class="search-controls" onsubmit="onSearchTransaction(); return false;">
@@ -1069,7 +1069,7 @@
         emptyCell.colSpan = 10;
         emptyCell.innerHTML =
           '<div class="empty-state"><span class="empty-icon" aria-hidden="true"><i class="fa-solid fa-receipt"></i></span>' +
-          '<h3>No transactions found</h3><p>Completed sales will show up here. Try another search or start a checkout.</p></div>';
+          '<h3>No transactions found</h3><p>Completed sales will show up here. Try another search or start a transaction.</p></div>';
         emptyRow.appendChild(emptyCell);
         transactionList.appendChild(emptyRow);
         return;

@@ -565,36 +565,36 @@ select {
   font-size: 11px;
 }
 
-.app-shell .checkout-actions {
+.app-shell .transaction-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
   margin-bottom: 14px;
 }
 
-.app-shell .checkout-actions .btn {
+.app-shell .transaction-actions .btn {
   flex: 1 1 130px;
 }
 
-.app-shell .checkout-details {
+.app-shell .transaction-details {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px 12px;
   margin-bottom: 12px;
 }
 
-.app-shell .checkout-field label {
+.app-shell .transaction-field label {
   margin: 0;
   font-size: 11px;
   font-weight: 850;
 }
 
-.app-shell .checkout-field label span {
+.app-shell .transaction-field label span {
   color: var(--muted);
   font-weight: 600;
 }
 
-.app-shell .checkout-field .form-control {
+.app-shell .transaction-field .form-control {
   min-width: 0;
   min-height: 34px;
   height: 34px;
@@ -610,17 +610,17 @@ select {
   line-height: 1;
 }
 
-.app-shell .checkout-label {
+.app-shell .transaction-label {
   margin-bottom: 13px;
   font-size: 16px;
   font-weight: 900;
 }
 
-.app-shell .checkout-total {
+.app-shell .transaction-total {
   background: var(--blue) !important;
 }
 
-.app-shell .checkout-search {
+.app-shell .transaction-search {
   padding: 16px;
   border: 1px dashed #aaa18e;
   border-radius: 8px;
@@ -742,7 +742,7 @@ select {
     font-size: 10px;
   }
 
-  .app-shell .checkout-details {
+  .app-shell .transaction-details {
     gap: 5px 8px;
   }
 }
