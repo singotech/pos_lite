@@ -75,12 +75,24 @@
             </div>
             <div class="row">
               <div class="col-lg-4 mb-2">
-                <div class="col">
-                  <div class="d-grid">
-                    <button class="btn btn-info btn-block" type="button" onclick="onDownloadTransaction()">
-                      <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
-                      Export transactions
-                    </button>
+                <input id="transaction_file" type="file" accept=".csv,text/csv" hidden
+                  onchange="onUploadTransactionProcess()">
+                <div class="row g-2">
+                  <div class="col">
+                    <div class="d-grid">
+                      <button class="btn btn-info btn-block" type="button" onclick="onDownloadTransaction()">
+                        <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+                        Download transactions
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="d-grid">
+                      <button class="btn btn-info btn-block" type="button" onclick="onUploadTransaction()">
+                        <i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i>
+                        Upload transactions
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -166,6 +178,7 @@
   <script src="js/localstoragedb.min.js"></script>
   <script src="js/database.js"></script>
   <script src="js/alerts.js"></script>
+  <script src="js/csv.js"></script>
   <script>
     var transactions = [];
     var transactionPage = 1;
@@ -381,21 +394,25 @@
         return;
       }
 
-      var header = ["ID", "Reference", "Date & time", "Customer", "Payment type", "Total", "Payment", "Change", "Paid", "Items"];
+      var header = [
+        "reference", "timestamp", "datetime", "customer_name", "payment_type",
+        "total", "payment", "change", "paid", "data", "items"
+      ];
       var rows = records.map(function (record) {
         var items = Array.isArray(record.data) ? record.data.map(function (item) {
           return (item.product_name || item.product_code || "Item") + " x " + (item.product_qty || 0);
         }).join("; ") : "";
         return [
-          record.ID,
           record.reference,
+          record.timestamp,
           record.datetime,
           record.customer_name || "",
           record.payment_type || "cash",
           record.total,
           record.payment,
           record.change,
-          record.paid ? "Paid" : "Unpaid",
+          record.paid ? "true" : "false",
+          JSON.stringify(Array.isArray(record.data) ? record.data : []),
           items
         ];
       });
@@ -413,6 +430,182 @@
       window.setTimeout(function () {
         window.URL.revokeObjectURL(fileUrl);
       }, 1000);
+    }
+
+    function onUploadTransaction() {
+      var fileInput = document.getElementById("transaction_file");
+      fileInput.value = "";
+      fileInput.click();
+    }
+
+    function onUploadTransactionProcess() {
+      var fileInput = document.getElementById("transaction_file");
+      var file = fileInput.files && fileInput.files[0];
+      if (!file || !/\.csv$/i.test(file.name)) {
+        alertE("Please choose a valid transaction CSV backup.");
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        var importedTransactions;
+        try {
+          importedTransactions = parseTransactionCSV(reader.result);
+        } catch (error) {
+          alertE("Could not parse transaction backup: " + error.message);
+          return;
+        }
+
+        if (!importedTransactions) {
+          alertE("This CSV is incomplete or invalid. Export a new transaction backup from Sales and try again.");
+          return;
+        }
+
+        confirmAction(
+          "Importing " + importedTransactions.length +
+          " transactions will replace all saved transactions on this device. Continue?",
+          function () {
+            replaceTransactions(importedTransactions);
+          },
+          "Replace transactions"
+        );
+      };
+      reader.onerror = function () {
+        alertE("Could not read the selected transaction backup.");
+      };
+      reader.readAsText(file);
+    }
+
+    function parseTransactionCSV(csv) {
+      var rows = parseCSV(String(csv || "").replace(/^\uFEFF/, ""));
+      if (rows.length < 2) {
+        return false;
+      }
+
+      var headers = rows[0].map(function (header) { return header.trim().toLowerCase(); });
+      var headerIndexes = {};
+      for (var headerIndex = 0; headerIndex < headers.length; headerIndex++) {
+        var header = headers[headerIndex];
+        if (Object.prototype.hasOwnProperty.call(headerIndexes, header)) {
+          return false;
+        }
+        headerIndexes[header] = headerIndex;
+      }
+
+      var requiredHeaders = [
+        "reference", "timestamp", "datetime", "customer_name", "payment_type",
+        "total", "payment", "change", "paid", "data"
+      ];
+      if (!requiredHeaders.every(function (header) {
+        return Object.prototype.hasOwnProperty.call(headerIndexes, header);
+      })) {
+        return false;
+      }
+
+      var seenReferences = new Set();
+      var importedTransactions = [];
+      for (var rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+        var row = rows[rowIndex];
+        if (row.length !== headers.length) {
+          return false;
+        }
+
+        var reference = restoreTransactionCSVValue(row[headerIndexes.reference]).trim();
+        var timestampValue = restoreTransactionCSVValue(row[headerIndexes.timestamp]).trim();
+        var timestamp = Number(timestampValue);
+        var datetime = restoreTransactionCSVValue(row[headerIndexes.datetime]);
+        var customerName = restoreTransactionCSVValue(row[headerIndexes.customer_name]);
+        var paymentType = restoreTransactionCSVValue(row[headerIndexes.payment_type]).trim() || "cash";
+        var totalValue = restoreTransactionCSVValue(row[headerIndexes.total]).trim();
+        var paymentValue = restoreTransactionCSVValue(row[headerIndexes.payment]).trim();
+        var changeValue = restoreTransactionCSVValue(row[headerIndexes.change]).trim();
+        var total = Number(totalValue);
+        var payment = Number(paymentValue);
+        var change = Number(changeValue);
+        var paidValue = row[headerIndexes.paid].trim().toLowerCase();
+        var data;
+
+        try {
+          data = JSON.parse(row[headerIndexes.data]);
+        } catch (error) {
+          return false;
+        }
+
+        if (!reference || seenReferences.has(reference) || !timestampValue || !Number.isFinite(timestamp) ||
+          timestamp < 0 || !datetime || !totalValue || !Number.isFinite(total) || total < 0 ||
+          !paymentValue || !Number.isFinite(payment) || payment < 0 || !changeValue ||
+          !Number.isFinite(change) || (paidValue !== "true" && paidValue !== "false") ||
+          !Array.isArray(data) || data.length === 0) {
+          return false;
+        }
+
+        var transactionItems = [];
+        for (var itemIndex = 0; itemIndex < data.length; itemIndex++) {
+          var item = data[itemIndex];
+          if (!item || typeof item !== "object" || Array.isArray(item)) {
+            return false;
+          }
+
+          var productCode = restoreTransactionCSVValue(item.product_code).trim();
+          var productName = restoreTransactionCSVValue(item.product_name);
+          var productPriceValue = restoreTransactionCSVValue(item.product_price).trim();
+          var productQuantityValue = restoreTransactionCSVValue(item.product_qty).trim();
+          var productTotalValue = restoreTransactionCSVValue(item.product_price_total).trim();
+          var productPrice = Number(productPriceValue);
+          var productQuantity = Number(productQuantityValue);
+          var productTotal = Number(productTotalValue);
+          if (!productCode || !productName || !productPriceValue || !Number.isFinite(productPrice) ||
+            productPrice < 0 || !productQuantityValue || !Number.isSafeInteger(productQuantity) ||
+            productQuantity <= 0 || !productTotalValue || !Number.isFinite(productTotal) || productTotal < 0) {
+            return false;
+          }
+
+          transactionItems.push({
+            product_code: productCode,
+            product_name: productName,
+            product_price: String(productPrice),
+            product_qty: String(productQuantity),
+            product_price_total: String(productTotal)
+          });
+        }
+
+        seenReferences.add(reference);
+        importedTransactions.push({
+          reference: reference,
+          timestamp: timestamp,
+          datetime: datetime,
+          customer_name: customerName,
+          payment_type: paymentType,
+          total: String(total),
+          payment: String(payment),
+          change: String(change),
+          paid: paidValue === "true",
+          data: transactionItems
+        });
+      }
+
+      return importedTransactions;
+    }
+
+    function restoreTransactionCSVValue(value) {
+      return String(value === null || value === undefined ? "" : value)
+        .replace(/^'(?=[=+\-@\t\r])/, "");
+    }
+
+    function replaceTransactions(importedTransactions) {
+      lsDB = newSessionDB();
+      lsDB.truncate("sales");
+      importedTransactions.forEach(function (transaction) {
+        lsDB.insert("sales", transaction);
+      });
+
+      if (!lsDB.commit()) {
+        allTransactions();
+        alertE("Could not save imported transactions. The previous saved data was kept.");
+        return;
+      }
+
+      allTransactions();
     }
 
     function csvValue(value) {

@@ -31,4 +31,4 @@ Publish the repository root as a static site. Keep the HTML pages, `css/`, and `
 
 ## Data backup
 
-Export the product catalog and configuration from their respective pages. Export sales transactions from Sales. Imports replace the selected local dataset, so keep a backup before confirming an import or factory reset.
+Export the product catalog and configuration from their respective pages. Import or export sales transactions from Sales; transaction backups include the complete item data. Imports replace the selected local dataset, so keep a backup before confirming an import or factory reset.
