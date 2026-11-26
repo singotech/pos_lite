@@ -315,7 +315,7 @@
           row.appendChild(cell)
         }
         var priceCell = document.createElement("td")
-        priceCell.className = "text-right"
+        priceCell.className = "text-end"
         priceCell.textContent = String(resultProduct.product_price)
         row.appendChild(priceCell)
         var actionCell = document.createElement("td")
@@ -389,15 +389,15 @@
       nameCell.title = productName
       var quantityCell = document.createElement("td")
       quantityCell.id = "pid_qty_" + id
-      quantityCell.className = "text-right"
+      quantityCell.className = "text-end"
       quantityCell.textContent = String(quantity)
       var priceCell = document.createElement("td")
       priceCell.id = "pid_price_" + productCode
-      priceCell.className = "text-right"
+      priceCell.className = "text-end"
       priceCell.textContent = String(price)
       var subtotalCell = document.createElement("td")
       subtotalCell.id = "pid_subtotal_" + id
-      subtotalCell.className = "text-right"
+      subtotalCell.className = "text-end"
       subtotalCell.textContent = String(quantity * price)
       var actionsCell = document.createElement("td")
       actionsCell.className = "cart-operation-cell"

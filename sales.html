@@ -117,9 +117,9 @@
                     <th scope="col">Date &amp; time</th>
                     <th scope="col">Customer</th>
                     <th scope="col">Payment type</th>
-                    <th scope="col" class="text-right">Total</th>
-                    <th scope="col" class="text-right">Payment</th>
-                    <th scope="col" class="text-right">Change</th>
+                    <th scope="col" class="text-end">Total</th>
+                    <th scope="col" class="text-end">Payment</th>
+                    <th scope="col" class="text-end">Change</th>
                     <th scope="col">Status</th>
                     <th scope="col" class="text-center">Actions</th>
                   </tr>
@@ -231,9 +231,9 @@
         appendCell(row, record.datetime || "—");
         appendCell(row, record.customer_name || "Walk-in");
         appendCell(row, formatPaymentType(record.payment_type));
-        appendCell(row, formatNumber(record.total), "text-right");
-        appendCell(row, formatNumber(record.payment), "text-right");
-        appendCell(row, formatNumber(record.change), "text-right");
+        appendCell(row, formatNumber(record.total), "text-end");
+        appendCell(row, formatNumber(record.payment), "text-end");
+        appendCell(row, formatNumber(record.change), "text-end");
         appendCell(row, record.paid ? "Paid" : "Unpaid");
 
         var actionCell = document.createElement("td");

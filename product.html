@@ -223,7 +223,7 @@
           cell.id = field[0] + "_" + product.ID
           cell.textContent = field[1] === null || field[1] === undefined ? "" : String(field[1])
           if (index === 4) {
-            cell.className = "text-right"
+            cell.className = "text-end"
           }
           row.appendChild(cell)
         })
@@ -312,7 +312,7 @@
           cell.setAttribute("aria-label", ["", "Product code", "Product name", "Category", "Price"][index])
         }
         if (index === 4) {
-          cell.className = "text-right"
+          cell.className = "text-end"
         }
         row.appendChild(cell)
       })
