@@ -55,6 +55,16 @@ function csvEscape(value) {
   return '"' + text.replace(/"/g, '""') + '"';
 }
 
+function timestampedCSVFilename(prefix) {
+  var now = new Date();
+  var date = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("");
+  return prefix + "-" + date + "-" + Math.floor(now.getTime() / 1000) + ".csv";
+}
+
 function downloadCSV(filename, rows) {
   var contents = rows.map(function (row) {
     return row.map(csvEscape).join(",");

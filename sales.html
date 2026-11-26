@@ -423,7 +423,7 @@
       var downloadLink = document.createElement("a");
       var fileUrl = window.URL.createObjectURL(file);
       downloadLink.href = fileUrl;
-      downloadLink.download = "pos-lite-transactions.csv";
+      downloadLink.download = timestampedCSVFilename("sales");
       document.body.appendChild(downloadLink);
       downloadLink.click();
       downloadLink.remove();

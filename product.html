@@ -420,7 +420,7 @@
         rows.push([product.product_code, product.product_name, product.product_category || "Uncategorized",
         product.product_price])
       })
-      downloadCSV("product.csv", rows)
+      downloadCSV(timestampedCSVFilename("product"), rows)
     }
 
     function onUploadProduct() {

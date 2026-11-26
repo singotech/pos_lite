@@ -425,7 +425,7 @@
       listConfig.forEach(function (config) {
         rows.push([config.key, config.value])
       })
-      downloadCSV("config.csv", rows)
+      downloadCSV(timestampedCSVFilename("config"), rows)
     }
 
     function onUploadConfig() {
