@@ -187,6 +187,19 @@
   <!-- Scanner -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script type="text/javascript">
+    var scannerBeepSound = new Audio("./assets/beep.mp3")
+    var scannerErrorSound = new Audio("./assets/error.mp3")
+
+    function playScannerSound(sound) {
+      sound.currentTime = 0
+      var playback = sound.play()
+      if (playback && typeof playback.catch === "function") {
+        playback.catch(function (error) {
+          console.error("Unable to play barcode scanner feedback sound.", error)
+        })
+      }
+    }
+
     function onScanSuccess(decodedText, decodedResult) {
       html5QrcodeScanner.pause()
       setTimeout(onNextScan, 1500)
@@ -199,13 +212,16 @@
         query: { product_code: decodedText }
       })
 
-      if (products.length != 1) {
+      if (!Array.isArray(products) || products.length != 1) {
+        playScannerSound(scannerErrorSound)
         alertE("product not found or corrupted")
         setTimeout(alertClose, 1000)
         return
       }
 
-      onAddToCart(products[0].ID, products[0].product_code, products[0].product_name, products[0].product_price, 1)
+      var product = products[0]
+      var added = onAddToCart(product.ID, product.product_code, product.product_name, product.product_price, 1)
+      playScannerSound(added ? scannerBeepSound : scannerErrorSound)
     }
 
     function onNextScan() {
@@ -342,21 +358,21 @@
       var quantityChange = Number(qtyValue)
       if (!Number.isFinite(price) || price < 0 || !Number.isFinite(quantityChange)) {
         alertE("This product has an invalid price or quantity")
-        return
+        return false
       }
 
       var row = document.getElementById(rowId)
       var quantity = row ? Number(document.getElementById("pid_qty_" + id).textContent) + quantityChange : quantityChange
       if (!Number.isSafeInteger(quantity) || !Number.isFinite(quantity * price)) {
         alertE("This product quantity or subtotal is too large")
-        return
+        return false
       }
       if (quantity <= 0) {
         if (row) {
           row.remove()
         }
         calculateTotal()
-        return
+        return true
       }
 
       if (!row) {
@@ -413,6 +429,7 @@
       row.appendChild(subtotalCell)
       row.appendChild(actionsCell)
       calculateTotal()
+      return true
     }
 
     function calculateTotal() {
