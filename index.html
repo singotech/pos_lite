@@ -2,18 +2,18 @@
 <html lang="en">
 
 <head>
-  <title>POS Lite</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="description"
+    content="Free Point of Sale (POS) software for everyone. POS Lite makes managing sales, processing transactions, and tracking daily business operations simple and efficient.">
+  <meta name="author" content="POS Lite">
+  <title>Transaction - POS Lite</title>
 
   <link rel="icon" type="image/png" href="https://i.ibb.co.com/cK1Ss7vL/poslite-logo.png">
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="Description" content="POS Lite" />
-  <meta name="author" content="POS Lite">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -125,18 +125,19 @@
             <div>
               <div class="mt-2 transaction-search" id="seach_product_form" style="display: none;">
                 <div>
-                  <form class="form-inline mb-2">
-                    <div class="form-group">
-                      <label class="sr-only" for="product_code_search">Search by product code, name, or category</label>
-                      <input type="search" placeholder="Product code, name, or category" class="form-control"
-                        name="product_code_search" id="product_code_search"
-                        onkeypress="handleEnterKeyPressOnSearchProductCode(event)" />
-                    </div>
-                    <div class="form-group ml-1" style="align-self: end;">
-                      <button type="button" class="btn btn-info" onclick="onSearchProduct()">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                      </button>
-                    </div>
+                  <label class="visually-hidden" for="product_code_search">Search by product code, name, or category</label>
+                  <form class="input-group mb-2">
+                    <input type="search" placeholder="Product code, name, or category" class="form-control"
+                      name="product_code_search" id="product_code_search"
+                      onkeypress="handleEnterKeyPressOnSearchProductCode(event)" />
+                    <button type="button" class="btn btn-info btn-rounded" onclick="onSearchProduct()"
+                      aria-label="Search products">
+                      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-rounded" onclick="clearProductCodeSearch()"
+                      aria-label="Clear search" title="Clear search">
+                      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
                   </form>
                 </div>
 
@@ -290,7 +291,7 @@
         let resultProduct = searchProducts[resultIndex]
         var row = document.createElement("tr")
         var values = [resultProduct.ID, resultProduct.product_code, resultProduct.product_name,
-          resultProduct.product_category || "Uncategorized"]
+        resultProduct.product_category || "Uncategorized"]
         for (var valueIndex = 0; valueIndex < values.length; valueIndex++) {
           var cell = document.createElement("td")
           var value = values[valueIndex]
@@ -315,6 +316,11 @@
         row.appendChild(actionCell)
         resultsBody.appendChild(row)
       }
+    }
+
+    function clearProductCodeSearch() {
+      document.getElementById("product_code_search").value = ""
+      document.getElementById("tableProduct").textContent = ""
     }
 
   </script>
@@ -609,7 +615,7 @@
         lsDB.queryAll("sales", { query: { ID: editingTransactionId } })[0]
       var newDate = new Date()
       var dateTime = existingTransaction ? existingTransaction.datetime : newDate.toLocaleString("sv-SE")
-      
+
       var trxRef = document.getElementById("receipt_ref").innerHTML
       if (!trxRef) {
         var referencePrefix = `ST/${queryConfig("merchant_code")}/${queryConfig("pic_code")}`
